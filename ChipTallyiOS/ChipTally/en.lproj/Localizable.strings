@@ -1,0 +1,47 @@
+/*
+  Localizable.strings (English)
+  ChipTally
+*/
+
+// MARK: - Common
+"app.name" = "ChipTally";
+"common.cancel" = "Cancel";
+"common.confirm" = "OK";
+"common.reset" = "Reset";
+"common.close" = "Close";
+
+// MARK: - Setup Screen
+"setup.subtitle" = "Board Game Chip Calculator";
+"setup.playerCount" = "Number of Players";
+"setup.initialChips" = "Starting Chips";
+"setup.playerNames" = "Player Names";
+"setup.namePlaceholder" = "Enter name";
+"setup.startGame" = "Start Game";
+"setup.resetTitle" = "Reset";
+"setup.resetMessage" = "Reset saved settings?";
+
+// MARK: - Game Screen
+"game.endGame" = "End Game";
+"game.endGameTitle" = "End Game";
+"game.endGameMessage" = "Are you sure you want to end the game?";
+"game.end" = "End";
+
+// MARK: - Transfer Screen
+"transfer.title" = "Transfer Chips";
+"transfer.from" = "From";
+"transfer.to" = "To";
+"transfer.amount" = "Amount to Transfer";
+"transfer.amountPlaceholder" = "Enter amount";
+"transfer.submit" = "Transfer";
+"transfer.invalidAmount" = "Please enter a valid amount";
+"transfer.samePlayer" = "Cannot transfer to the same player";
+
+// MARK: - History Screen
+"history.title" = "Transaction History";
+"history.empty" = "No transactions yet";
+
+// MARK: - Errors
+"error.insufficientChips" = "Insufficient chips";
+"error.invalidPlayer" = "Invalid player";
+"error.samePlayer" = "Cannot transfer to the same player";
+"error.invalidAmount" = "Invalid amount";

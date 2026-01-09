@@ -1,0 +1,47 @@
+/*
+  Localizable.strings (Spanish)
+  ChipTally
+*/
+
+// MARK: - Common
+"app.name" = "ChipTally";
+"common.cancel" = "Cancelar";
+"common.confirm" = "Aceptar";
+"common.reset" = "Restablecer";
+"common.close" = "Cerrar";
+
+// MARK: - Setup Screen
+"setup.subtitle" = "Calculadora de Fichas";
+"setup.playerCount" = "Número de Jugadores";
+"setup.initialChips" = "Fichas Iniciales";
+"setup.playerNames" = "Nombres de Jugadores";
+"setup.namePlaceholder" = "Ingrese nombre";
+"setup.startGame" = "Iniciar Juego";
+"setup.resetTitle" = "Restablecer";
+"setup.resetMessage" = "¿Restablecer la configuración guardada?";
+
+// MARK: - Game Screen
+"game.endGame" = "Terminar Juego";
+"game.endGameTitle" = "Terminar Juego";
+"game.endGameMessage" = "¿Estás seguro de que quieres terminar el juego?";
+"game.end" = "Terminar";
+
+// MARK: - Transfer Screen
+"transfer.title" = "Transferir Fichas";
+"transfer.from" = "De";
+"transfer.to" = "Para";
+"transfer.amount" = "Cantidad a Transferir";
+"transfer.amountPlaceholder" = "Ingrese cantidad";
+"transfer.submit" = "Transferir";
+"transfer.invalidAmount" = "Por favor ingrese una cantidad válida";
+"transfer.samePlayer" = "No se puede transferir al mismo jugador";
+
+// MARK: - History Screen
+"history.title" = "Historial de Transacciones";
+"history.empty" = "No hay transacciones todavía";
+
+// MARK: - Errors
+"error.insufficientChips" = "Fichas insuficientes";
+"error.invalidPlayer" = "Jugador inválido";
+"error.samePlayer" = "No se puede transferir al mismo jugador";
+"error.invalidAmount" = "Cantidad inválida";

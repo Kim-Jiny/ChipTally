@@ -1,0 +1,47 @@
+/*
+  Localizable.strings (Japanese)
+  ChipTally
+*/
+
+// MARK: - Common
+"app.name" = "ChipTally";
+"common.cancel" = "キャンセル";
+"common.confirm" = "OK";
+"common.reset" = "リセット";
+"common.close" = "閉じる";
+
+// MARK: - Setup Screen
+"setup.subtitle" = "ボードゲームチップ計算機";
+"setup.playerCount" = "プレイヤー数";
+"setup.initialChips" = "初期チップ数";
+"setup.playerNames" = "プレイヤー名";
+"setup.namePlaceholder" = "名前を入力";
+"setup.startGame" = "ゲーム開始";
+"setup.resetTitle" = "リセット";
+"setup.resetMessage" = "保存された設定をリセットしますか？";
+
+// MARK: - Game Screen
+"game.endGame" = "ゲーム終了";
+"game.endGameTitle" = "ゲーム終了";
+"game.endGameMessage" = "本当にゲームを終了しますか？";
+"game.end" = "終了";
+
+// MARK: - Transfer Screen
+"transfer.title" = "チップ送信";
+"transfer.from" = "送信者";
+"transfer.to" = "受信者";
+"transfer.amount" = "送信するチップ数";
+"transfer.amountPlaceholder" = "数量を入力";
+"transfer.submit" = "送信する";
+"transfer.invalidAmount" = "有効な数量を入力してください";
+"transfer.samePlayer" = "同じプレイヤーには送信できません";
+
+// MARK: - History Screen
+"history.title" = "取引履歴";
+"history.empty" = "取引履歴がありません";
+
+// MARK: - Errors
+"error.insufficientChips" = "チップが不足しています";
+"error.invalidPlayer" = "無効なプレイヤーです";
+"error.samePlayer" = "同じプレイヤーには送信できません";
+"error.invalidAmount" = "無効な数量です";

@@ -1,0 +1,47 @@
+/*
+  Localizable.strings (Simplified Chinese)
+  ChipTally
+*/
+
+// MARK: - Common
+"app.name" = "ChipTally";
+"common.cancel" = "取消";
+"common.confirm" = "确定";
+"common.reset" = "重置";
+"common.close" = "关闭";
+
+// MARK: - Setup Screen
+"setup.subtitle" = "桌游筹码计算器";
+"setup.playerCount" = "玩家人数";
+"setup.initialChips" = "初始筹码";
+"setup.playerNames" = "玩家名称";
+"setup.namePlaceholder" = "输入名称";
+"setup.startGame" = "开始游戏";
+"setup.resetTitle" = "重置";
+"setup.resetMessage" = "确定要重置保存的设置吗？";
+
+// MARK: - Game Screen
+"game.endGame" = "结束游戏";
+"game.endGameTitle" = "结束游戏";
+"game.endGameMessage" = "确定要结束游戏吗？";
+"game.end" = "结束";
+
+// MARK: - Transfer Screen
+"transfer.title" = "转移筹码";
+"transfer.from" = "发送方";
+"transfer.to" = "接收方";
+"transfer.amount" = "转移数量";
+"transfer.amountPlaceholder" = "输入数量";
+"transfer.submit" = "转移";
+"transfer.invalidAmount" = "请输入有效数量";
+"transfer.samePlayer" = "不能转移给同一玩家";
+
+// MARK: - History Screen
+"history.title" = "交易记录";
+"history.empty" = "暂无交易记录";
+
+// MARK: - Errors
+"error.insufficientChips" = "筹码不足";
+"error.invalidPlayer" = "无效的玩家";
+"error.samePlayer" = "不能转移给同一玩家";
+"error.invalidAmount" = "无效的数量";

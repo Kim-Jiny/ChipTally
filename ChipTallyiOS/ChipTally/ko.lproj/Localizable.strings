@@ -1,0 +1,47 @@
+/*
+  Localizable.strings (Korean)
+  ChipTally
+*/
+
+// MARK: - Common
+"app.name" = "ChipTally";
+"common.cancel" = "취소";
+"common.confirm" = "확인";
+"common.reset" = "초기화";
+"common.close" = "닫기";
+
+// MARK: - Setup Screen
+"setup.subtitle" = "보드게임 칩 계산기";
+"setup.playerCount" = "인원 수";
+"setup.initialChips" = "시작 칩 개수";
+"setup.playerNames" = "플레이어 이름";
+"setup.namePlaceholder" = "이름 입력";
+"setup.startGame" = "게임 시작";
+"setup.resetTitle" = "초기화";
+"setup.resetMessage" = "저장된 설정을 초기화하시겠습니까?";
+
+// MARK: - Game Screen
+"game.endGame" = "게임 종료";
+"game.endGameTitle" = "게임 종료";
+"game.endGameMessage" = "정말 게임을 종료하시겠습니까?";
+"game.end" = "종료";
+
+// MARK: - Transfer Screen
+"transfer.title" = "칩 전송";
+"transfer.from" = "보내는 사람";
+"transfer.to" = "받는 사람";
+"transfer.amount" = "전송할 칩 개수";
+"transfer.amountPlaceholder" = "개수 입력";
+"transfer.submit" = "전송하기";
+"transfer.invalidAmount" = "유효한 개수를 입력하세요";
+"transfer.samePlayer" = "같은 플레이어에게 전송할 수 없습니다";
+
+// MARK: - History Screen
+"history.title" = "거래 내역";
+"history.empty" = "아직 거래 내역이 없습니다";
+
+// MARK: - Errors
+"error.insufficientChips" = "칩이 부족합니다";
+"error.invalidPlayer" = "유효하지 않은 플레이어입니다";
+"error.samePlayer" = "같은 플레이어에게 전송할 수 없습니다";
+"error.invalidAmount" = "유효하지 않은 금액입니다";
