@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ChipTally</string>
+
+    <!-- Setup Screen -->
+    <string name="player_count">Number of Players</string>
+    <string name="initial_chip_count">Initial Chips</string>
+    <string name="player_label">Player %1$d</string>
+    <string name="player_name_hint">Enter name</string>
+    <string name="start_game">Start Game</string>
+    <string name="reset">Reset</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+
+    <!-- Game Screen -->
+    <string name="game_title">Game</string>
+    <string name="transfer">Transfer</string>
+    <string name="history">History</string>
+    <string name="end_game">End Game</string>
+
+    <!-- Transfer Screen -->
+    <string name="transfer_chips">Transfer Chips</string>
+    <string name="transfer_from">From: %1$s</string>
+    <string name="available_chips">Available: %1$d chips</string>
+    <string name="to_player">To Player</string>
+    <string name="amount">Amount</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+
+    <!-- History Screen -->
+    <string name="no_transactions">No transactions yet</string>
+    <string name="transaction_format">%1$s → %2$s: %3$d chips</string>
+
+    <!-- Messages -->
+    <string name="transfer_success">Transferred %1$d chips from %2$s to %3$s</string>
+    <string name="error_insufficient_chips">Insufficient chips</string>
+    <string name="error_invalid_player">Invalid player</string>
+    <string name="error_same_player">Cannot transfer to self</string>
+    <string name="error_invalid_amount">Invalid amount</string>
+
+    <!-- Dialog -->
+    <string name="end_game_title">End Game</string>
+    <string name="end_game_message">Are you sure you want to end the game? All data will be lost.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+</resources>

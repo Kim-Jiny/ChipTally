@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ChipTally</string>
+
+    <!-- Setup Screen -->
+    <string name="player_count">玩家數量</string>
+    <string name="initial_chip_count">初始籌碼</string>
+    <string name="player_label">玩家 %1$d</string>
+    <string name="player_name_hint">輸入名字</string>
+    <string name="start_game">開始遊戲</string>
+    <string name="reset">重置</string>
+
+    <!-- Game Screen -->
+    <string name="game_title">遊戲</string>
+    <string name="transfer">轉帳</string>
+    <string name="history">歷史</string>
+    <string name="end_game">結束遊戲</string>
+
+    <!-- Transfer Screen -->
+    <string name="transfer_chips">轉移籌碼</string>
+    <string name="transfer_from">從: %1$s</string>
+    <string name="available_chips">可用: %1$d 籌碼</string>
+    <string name="to_player">轉給玩家</string>
+    <string name="amount">數量</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">確認</string>
+
+    <!-- History Screen -->
+    <string name="no_transactions">暫無交易記錄</string>
+    <string name="transaction_format">%1$s → %2$s: %3$d 籌碼</string>
+
+    <!-- Messages -->
+    <string name="transfer_success">從 %2$s 向 %3$s 轉移了 %1$d 籌碼</string>
+    <string name="error_insufficient_chips">籌碼不足</string>
+    <string name="error_invalid_player">無效玩家</string>
+    <string name="error_same_player">不能轉給自己</string>
+    <string name="error_invalid_amount">無效數量</string>
+
+    <!-- Dialog -->
+    <string name="end_game_title">結束遊戲</string>
+    <string name="end_game_message">確定要結束遊戲嗎？所有資料將被刪除。</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+</resources>

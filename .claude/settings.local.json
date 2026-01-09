@@ -6,7 +6,15 @@
       "Bash(git -C /Users/jiny/Documents/Jiny/ChipTally status)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "mcp__ide__getDiagnostics",
+      "Bash(./gradlew assembleDebug:*)",
+      "Bash(keytool:*)",
+      "Bash(./gradlew bundleRelease:*)",
+      "Bash(gradle wrapper:*)",
+      "Bash(java:*)",
+      "Bash(echo:*)",
+      "Bash(./gradlew clean:*)"
     ]
   }
 }
