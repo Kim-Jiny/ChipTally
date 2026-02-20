@@ -25,6 +25,7 @@
 "game.endGameTitle" = "Terminar Juego";
 "game.endGameMessage" = "¿Estás seguro de que quieres terminar el juego?";
 "game.end" = "Terminar";
+"game.transferMessage" = "%@ → %@: %d";
 
 // MARK: - Transfer Screen
 "transfer.title" = "Transferir Fichas";
@@ -35,6 +36,9 @@
 "transfer.submit" = "Transferir";
 "transfer.invalidAmount" = "Por favor ingrese una cantidad válida";
 "transfer.samePlayer" = "No se puede transferir al mismo jugador";
+"transfer.fromChips" = "Remitente: %d";
+"transfer.toChips" = "Destinatario: %d";
+"transfer.maxTransfer" = "Máximo transferible: %d";
 
 // MARK: - History Screen
 "history.title" = "Historial de Transacciones";

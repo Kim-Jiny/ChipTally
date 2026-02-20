@@ -28,7 +28,7 @@ final class TransactionCell: UITableViewCell {
         let label = UILabel()
         label.text = "→"
         label.font = Theme.Fonts.body
-        label.textColor = Theme.Colors.primary
+        label.textColor = Theme.Colors.chipGold
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -44,7 +44,7 @@ final class TransactionCell: UITableViewCell {
     private let amountLabel: UILabel = {
         let label = UILabel()
         label.font = Theme.Fonts.headline
-        label.textColor = Theme.Colors.primary
+        label.textColor = Theme.Colors.chipCream
         label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -78,6 +78,8 @@ final class TransactionCell: UITableViewCell {
         containerView.addSubview(toLabel)
         containerView.addSubview(amountLabel)
         containerView.addSubview(timeLabel)
+
+        containerView.addShadow(opacity: 0.2, radius: 10, offset: CGSize(width: 0, height: 5))
 
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Theme.Spacing.xs),

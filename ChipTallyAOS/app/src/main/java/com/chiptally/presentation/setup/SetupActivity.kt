@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
+import android.view.inputmethod.InputMethodManager
+import android.content.Context
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +17,8 @@ import com.chiptally.data.repository.GameRepositoryImpl
 import com.chiptally.databinding.ActivitySetupBinding
 import com.chiptally.databinding.ItemPlayerNameBinding
 import com.chiptally.presentation.game.GameActivity
+import com.chiptally.presentation.common.applySystemBarInsets
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class SetupActivity : AppCompatActivity() {
 
@@ -28,6 +30,7 @@ class SetupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySetupBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        applySystemBarInsets(binding.root)
 
         viewModel.setRepository(GameRepositoryImpl(this))
 
@@ -37,6 +40,11 @@ class SetupActivity : AppCompatActivity() {
     }
 
     private fun setupViews() {
+        binding.scrollView.setOnTouchListener { v, _ ->
+            hideKeyboard()
+            v.performClick()
+            false
+        }
         playerAdapter = PlayerNameAdapter(
             names = viewModel.playerNames.value ?: mutableListOf("", ""),
             onNameChanged = { index, name -> viewModel.updatePlayerName(index, name) }
@@ -69,9 +77,20 @@ class SetupActivity : AppCompatActivity() {
         }
 
         binding.buttonReset.setOnClickListener {
-            viewModel.resetToDefaults()
-            updateUI()
+            showResetConfirmation()
         }
+    }
+
+    private fun showResetConfirmation() {
+        MaterialAlertDialogBuilder(this, R.style.ThemeOverlay_ChipTally_AlertDialog)
+            .setTitle(R.string.reset_title)
+            .setMessage(R.string.reset_message)
+            .setPositiveButton(R.string.reset) { _, _ ->
+                viewModel.resetToDefaults()
+                updateUI()
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
     }
 
     private fun observeViewModel() {
@@ -107,6 +126,12 @@ class SetupActivity : AppCompatActivity() {
     private fun updateUI() {
         binding.editTextChipCount.setText(viewModel.initialChipCount.value.toString())
         playerAdapter.updateNames(viewModel.playerNames.value ?: mutableListOf("", ""))
+    }
+
+    private fun hideKeyboard() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val view = currentFocus ?: binding.root
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
 

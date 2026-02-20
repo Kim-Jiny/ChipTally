@@ -26,7 +26,7 @@ final class PlayerNameCell: UITableViewCell {
     private let playerLabel: UILabel = {
         let label = UILabel()
         label.font = Theme.Fonts.bodyBold
-        label.textColor = Theme.Colors.primary
+        label.textColor = Theme.Colors.chipGold
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -55,6 +55,8 @@ final class PlayerNameCell: UITableViewCell {
         contentView.addSubview(containerView)
         containerView.addSubview(playerLabel)
         containerView.addSubview(nameTextField)
+
+        containerView.addShadow(opacity: 0.2, radius: 10, offset: CGSize(width: 0, height: 5))
 
         nameTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
 

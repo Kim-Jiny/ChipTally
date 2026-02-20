@@ -25,6 +25,7 @@
 "game.endGameTitle" = "게임 종료";
 "game.endGameMessage" = "정말 게임을 종료하시겠습니까?";
 "game.end" = "종료";
+"game.transferMessage" = "%@ → %@: %d개";
 
 // MARK: - Transfer Screen
 "transfer.title" = "칩 전송";
@@ -35,6 +36,9 @@
 "transfer.submit" = "전송하기";
 "transfer.invalidAmount" = "유효한 개수를 입력하세요";
 "transfer.samePlayer" = "같은 플레이어에게 전송할 수 없습니다";
+"transfer.fromChips" = "보내는 사람: %d개";
+"transfer.toChips" = "받는 사람: %d개";
+"transfer.maxTransfer" = "최대 전송 가능: %d개";
 
 // MARK: - History Screen
 "history.title" = "거래 내역";

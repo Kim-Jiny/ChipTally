@@ -25,6 +25,7 @@
 "game.endGameTitle" = "ゲーム終了";
 "game.endGameMessage" = "本当にゲームを終了しますか？";
 "game.end" = "終了";
+"game.transferMessage" = "%@ → %@: %d個";
 
 // MARK: - Transfer Screen
 "transfer.title" = "チップ送信";
@@ -35,6 +36,9 @@
 "transfer.submit" = "送信する";
 "transfer.invalidAmount" = "有効な数量を入力してください";
 "transfer.samePlayer" = "同じプレイヤーには送信できません";
+"transfer.fromChips" = "送信者: %d個";
+"transfer.toChips" = "受信者: %d個";
+"transfer.maxTransfer" = "最大送信可能: %d個";
 
 // MARK: - History Screen
 "history.title" = "取引履歴";

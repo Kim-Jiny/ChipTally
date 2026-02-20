@@ -12,6 +12,7 @@ import com.chiptally.databinding.ActivityHistoryBinding
 import com.chiptally.databinding.ItemTransactionBinding
 import com.chiptally.domain.model.Player
 import com.chiptally.domain.model.Transaction
+import com.chiptally.presentation.common.applySystemBarInsets
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -24,13 +25,14 @@ class HistoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        applySystemBarInsets(binding.root)
 
         setupViews()
         loadHistory()
     }
 
     private fun setupViews() {
-        binding.toolbar.setNavigationOnClickListener {
+        binding.buttonClose.setOnClickListener {
             finish()
         }
 
@@ -78,17 +80,13 @@ class TransactionAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val transaction = transactions[position]
-        val context = holder.itemView.context
 
         val fromName = players.find { it.id == transaction.fromPlayerId }?.name ?: "Unknown"
         val toName = players.find { it.id == transaction.toPlayerId }?.name ?: "Unknown"
 
-        holder.binding.textViewTransactionInfo.text = context.getString(
-            R.string.transaction_format,
-            fromName,
-            toName,
-            transaction.amount
-        )
+        holder.binding.textViewFromName.text = fromName
+        holder.binding.textViewToName.text = toName
+        holder.binding.textViewAmount.text = "+${transaction.amount}"
         holder.binding.textViewTimestamp.text = dateFormat.format(transaction.timestamp)
     }
 

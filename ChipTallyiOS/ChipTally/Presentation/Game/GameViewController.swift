@@ -16,9 +16,23 @@ final class GameViewController: UIViewController {
 
     // MARK: - UI Components
 
+    private let backgroundView: FeltBackgroundView = {
+        let view = FeltBackgroundView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     private let headerView: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.Colors.primary
+        view.backgroundColor = Theme.Colors.rail
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    private let headerInsetView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Theme.Colors.railHighlight
+        view.roundCorners(Theme.CornerRadius.large)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -26,8 +40,8 @@ final class GameViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = L10n.Common.appName
-        label.font = Theme.Fonts.headline
-        label.textColor = .white
+        label.font = Theme.Fonts.title
+        label.textColor = Theme.Colors.chipGold
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -35,7 +49,9 @@ final class GameViewController: UIViewController {
     private let historyButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "clock.arrow.circlepath"), for: .normal)
-        button.tintColor = .white
+        button.tintColor = Theme.Colors.chipCream
+        button.backgroundColor = Theme.Colors.railHighlight
+        button.layer.cornerRadius = 18
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -43,7 +59,9 @@ final class GameViewController: UIViewController {
     private let endGameButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
-        button.tintColor = .white
+        button.tintColor = Theme.Colors.chipCream
+        button.backgroundColor = Theme.Colors.railHighlight
+        button.layer.cornerRadius = 18
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -60,16 +78,18 @@ final class GameViewController: UIViewController {
         )
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = Theme.Colors.background
+        collectionView.backgroundColor = .clear
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
 
     private let transferButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = Theme.Colors.primary
+        button.backgroundColor = Theme.Colors.chipRed
         button.setImage(UIImage(systemName: "arrow.left.arrow.right"), for: .normal)
-        button.tintColor = .white
+        button.tintColor = Theme.Colors.chipCream
+        button.layer.borderWidth = 4
+        button.layer.borderColor = Theme.Colors.chipCream.cgColor
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -105,33 +125,46 @@ final class GameViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = Theme.Colors.background
 
+        view.addSubview(backgroundView)
         view.addSubview(headerView)
+        headerView.addSubview(headerInsetView)
         headerView.addSubview(titleLabel)
         headerView.addSubview(historyButton)
         headerView.addSubview(endGameButton)
         view.addSubview(collectionView)
         view.addSubview(transferButton)
 
-        transferButton.addShadow()
+        headerView.addShadow(opacity: 0.35, radius: 14, offset: CGSize(width: 0, height: 6))
+        transferButton.addShadow(opacity: 0.4, radius: 14, offset: CGSize(width: 0, height: 8))
 
         NSLayoutConstraint.activate([
+            backgroundView.topAnchor.constraint(equalTo: view.topAnchor),
+            backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
             headerView.topAnchor.constraint(equalTo: view.topAnchor),
             headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 100),
+            headerView.heightAnchor.constraint(equalToConstant: 110),
 
-            titleLabel.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -Theme.Spacing.md),
+            headerInsetView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: Theme.Spacing.md),
+            headerInsetView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -Theme.Spacing.md),
+            headerInsetView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -Theme.Spacing.md),
+            headerInsetView.heightAnchor.constraint(equalToConstant: 52),
 
-            endGameButton.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: Theme.Spacing.md),
-            endGameButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            endGameButton.widthAnchor.constraint(equalToConstant: 44),
-            endGameButton.heightAnchor.constraint(equalToConstant: 44),
+            titleLabel.centerXAnchor.constraint(equalTo: headerInsetView.centerXAnchor),
+            titleLabel.centerYAnchor.constraint(equalTo: headerInsetView.centerYAnchor),
 
-            historyButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -Theme.Spacing.md),
-            historyButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            historyButton.widthAnchor.constraint(equalToConstant: 44),
-            historyButton.heightAnchor.constraint(equalToConstant: 44),
+            endGameButton.leadingAnchor.constraint(equalTo: headerInsetView.leadingAnchor, constant: Theme.Spacing.sm),
+            endGameButton.centerYAnchor.constraint(equalTo: headerInsetView.centerYAnchor),
+            endGameButton.widthAnchor.constraint(equalToConstant: 36),
+            endGameButton.heightAnchor.constraint(equalToConstant: 36),
+
+            historyButton.trailingAnchor.constraint(equalTo: headerInsetView.trailingAnchor, constant: -Theme.Spacing.sm),
+            historyButton.centerYAnchor.constraint(equalTo: headerInsetView.centerYAnchor),
+            historyButton.widthAnchor.constraint(equalToConstant: 36),
+            historyButton.heightAnchor.constraint(equalToConstant: 36),
 
             collectionView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -140,8 +173,8 @@ final class GameViewController: UIViewController {
 
             transferButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             transferButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Theme.Spacing.lg),
-            transferButton.widthAnchor.constraint(equalToConstant: 64),
-            transferButton.heightAnchor.constraint(equalToConstant: 64)
+            transferButton.widthAnchor.constraint(equalToConstant: 68),
+            transferButton.heightAnchor.constraint(equalToConstant: 68)
         ])
     }
 
@@ -200,7 +233,7 @@ final class GameViewController: UIViewController {
         let label = UILabel()
         label.text = message
         label.font = Theme.Fonts.body
-        label.textColor = .white
+        label.textColor = Theme.Colors.text
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
 
@@ -250,7 +283,7 @@ extension GameViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let spacing = Theme.Spacing.md * 2 + Theme.Spacing.sm
         let width = (collectionView.bounds.width - spacing) / 2
-        return CGSize(width: width, height: 140)
+        return CGSize(width: width, height: 170)
     }
 }
 
@@ -272,7 +305,7 @@ extension GameViewController: GameViewModelDelegate {
     func didTransferChips(transaction: Transaction) {
         let fromName = viewModel.getPlayerName(for: transaction.fromPlayerId)
         let toName = viewModel.getPlayerName(for: transaction.toPlayerId)
-        showToast(message: "\(fromName) → \(toName): \(transaction.amount)개")
+        showToast(message: String(format: L10n.Game.transferMessageFormat, fromName, toName, transaction.amount))
     }
 
     func didFailTransfer(error: TransferError) {

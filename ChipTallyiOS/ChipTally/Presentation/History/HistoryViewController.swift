@@ -10,9 +10,15 @@ final class HistoryViewController: UIViewController {
 
     // MARK: - UI Components
 
+    private let backgroundView: FeltBackgroundView = {
+        let view = FeltBackgroundView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     private let tableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = Theme.Colors.background
+        tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
@@ -55,6 +61,10 @@ final class HistoryViewController: UIViewController {
         title = L10n.History.title
 
         navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.titleTextAttributes = [
+            .foregroundColor: Theme.Colors.text,
+            .font: Theme.Fonts.bodyBold
+        ]
 
         let closeButton = UIBarButtonItem(
             image: UIImage(systemName: "xmark"),
@@ -62,13 +72,19 @@ final class HistoryViewController: UIViewController {
             target: self,
             action: #selector(closeTapped)
         )
-        closeButton.tintColor = Theme.Colors.text
+        closeButton.tintColor = Theme.Colors.chipCream
         navigationItem.rightBarButtonItem = closeButton
 
+        view.addSubview(backgroundView)
         view.addSubview(tableView)
         view.addSubview(emptyLabel)
 
         NSLayoutConstraint.activate([
+            backgroundView.topAnchor.constraint(equalTo: view.topAnchor),
+            backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),

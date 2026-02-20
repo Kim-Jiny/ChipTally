@@ -16,6 +16,12 @@ final class SetupViewController: UIViewController {
 
     // MARK: - UI Components
 
+    private let backgroundView: FeltBackgroundView = {
+        let view = FeltBackgroundView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
@@ -33,7 +39,7 @@ final class SetupViewController: UIViewController {
         let label = UILabel()
         label.text = L10n.Common.appName
         label.font = Theme.Fonts.title
-        label.textColor = Theme.Colors.primary
+        label.textColor = Theme.Colors.chipGold
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -70,7 +76,7 @@ final class SetupViewController: UIViewController {
         let label = UILabel()
         label.text = "2"
         label.font = Theme.Fonts.headline
-        label.textColor = Theme.Colors.primary
+        label.textColor = Theme.Colors.chipGold
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -78,16 +84,20 @@ final class SetupViewController: UIViewController {
 
     private let decrementButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "minus.circle.fill"), for: .normal)
-        button.tintColor = Theme.Colors.primary
+        button.setImage(UIImage(systemName: "minus"), for: .normal)
+        button.tintColor = Theme.Colors.chipCream
+        button.backgroundColor = Theme.Colors.railHighlight
+        button.layer.cornerRadius = 18
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
 
     private let incrementButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
-        button.tintColor = Theme.Colors.primary
+        button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.tintColor = Theme.Colors.chipCream
+        button.backgroundColor = Theme.Colors.railHighlight
+        button.layer.cornerRadius = 18
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -187,6 +197,7 @@ final class SetupViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = Theme.Colors.background
 
+        view.addSubview(backgroundView)
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
 
@@ -207,10 +218,18 @@ final class SetupViewController: UIViewController {
         chipCountSection.addSubview(chipCountTitleLabel)
         chipCountSection.addSubview(chipCountTextField)
 
+        playerCountSection.addShadow(opacity: 0.25, radius: 12, offset: CGSize(width: 0, height: 6))
+        chipCountSection.addShadow(opacity: 0.25, radius: 12, offset: CGSize(width: 0, height: 6))
+
         let tableHeight = CGFloat(viewModel.playerCount) * 80
         tableViewHeightConstraint = tableView.heightAnchor.constraint(equalToConstant: tableHeight)
 
         NSLayoutConstraint.activate([
+            backgroundView.topAnchor.constraint(equalTo: view.topAnchor),
+            backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -241,8 +260,8 @@ final class SetupViewController: UIViewController {
 
             incrementButton.trailingAnchor.constraint(equalTo: playerCountSection.trailingAnchor, constant: -Theme.Spacing.md),
             incrementButton.centerYAnchor.constraint(equalTo: playerCountSection.centerYAnchor),
-            incrementButton.widthAnchor.constraint(equalToConstant: 44),
-            incrementButton.heightAnchor.constraint(equalToConstant: 44),
+            incrementButton.widthAnchor.constraint(equalToConstant: 36),
+            incrementButton.heightAnchor.constraint(equalToConstant: 36),
 
             playerCountLabel.trailingAnchor.constraint(equalTo: incrementButton.leadingAnchor, constant: -Theme.Spacing.sm),
             playerCountLabel.centerYAnchor.constraint(equalTo: playerCountSection.centerYAnchor),
@@ -250,8 +269,8 @@ final class SetupViewController: UIViewController {
 
             decrementButton.trailingAnchor.constraint(equalTo: playerCountLabel.leadingAnchor, constant: -Theme.Spacing.sm),
             decrementButton.centerYAnchor.constraint(equalTo: playerCountSection.centerYAnchor),
-            decrementButton.widthAnchor.constraint(equalToConstant: 44),
-            decrementButton.heightAnchor.constraint(equalToConstant: 44),
+            decrementButton.widthAnchor.constraint(equalToConstant: 36),
+            decrementButton.heightAnchor.constraint(equalToConstant: 36),
 
             chipCountSection.topAnchor.constraint(equalTo: playerCountSection.bottomAnchor, constant: Theme.Spacing.md),
             chipCountSection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Theme.Spacing.md),

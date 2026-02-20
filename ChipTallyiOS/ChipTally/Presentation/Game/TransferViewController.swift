@@ -21,7 +21,7 @@ final class TransferViewController: UIViewController {
 
     private let containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.Colors.background
+        view.backgroundColor = Theme.Colors.panel
         view.roundCorners(Theme.CornerRadius.extraLarge)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -39,8 +39,10 @@ final class TransferViewController: UIViewController {
 
     private let closeButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
-        button.tintColor = Theme.Colors.secondaryText
+        button.setImage(UIImage(systemName: "xmark"), for: .normal)
+        button.tintColor = Theme.Colors.chipCream
+        button.backgroundColor = Theme.Colors.railHighlight
+        button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -63,7 +65,7 @@ final class TransferViewController: UIViewController {
     private let arrowImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "arrow.right.circle.fill")
-        imageView.tintColor = Theme.Colors.primary
+        imageView.tintColor = Theme.Colors.chipGold
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -88,6 +90,33 @@ final class TransferViewController: UIViewController {
         label.text = L10n.Transfer.amount
         label.font = Theme.Fonts.caption
         label.textColor = Theme.Colors.secondaryText
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    private let fromChipsLabel: UILabel = {
+        let label = UILabel()
+        label.font = Theme.Fonts.caption
+        label.textColor = Theme.Colors.secondaryText
+        label.textAlignment = .left
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    private let toChipsLabel: UILabel = {
+        let label = UILabel()
+        label.font = Theme.Fonts.caption
+        label.textColor = Theme.Colors.secondaryText
+        label.textAlignment = .right
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    private let maxTransferLabel: UILabel = {
+        let label = UILabel()
+        label.font = Theme.Fonts.bodyBold
+        label.textColor = Theme.Colors.chipGold
+        label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -138,7 +167,7 @@ final class TransferViewController: UIViewController {
     // MARK: - Setup
 
     private func setupUI() {
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.55)
 
         view.addSubview(containerView)
         containerView.addSubview(titleLabel)
@@ -149,8 +178,13 @@ final class TransferViewController: UIViewController {
         containerView.addSubview(toLabel)
         containerView.addSubview(toPicker)
         containerView.addSubview(amountLabel)
+        containerView.addSubview(fromChipsLabel)
+        containerView.addSubview(toChipsLabel)
+        containerView.addSubview(maxTransferLabel)
         containerView.addSubview(amountTextField)
         containerView.addSubview(transferButton)
+
+        containerView.addShadow(opacity: 0.35, radius: 16, offset: CGSize(width: 0, height: 10))
 
         containerCenterYConstraint = containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
 
@@ -188,7 +222,19 @@ final class TransferViewController: UIViewController {
             toPicker.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 0.4),
             toPicker.heightAnchor.constraint(equalToConstant: 120),
 
-            amountLabel.topAnchor.constraint(equalTo: fromPicker.bottomAnchor, constant: Theme.Spacing.md),
+            fromChipsLabel.topAnchor.constraint(equalTo: fromPicker.bottomAnchor, constant: Theme.Spacing.xs),
+            fromChipsLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Theme.Spacing.md),
+            fromChipsLabel.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 0.45),
+
+            toChipsLabel.topAnchor.constraint(equalTo: toPicker.bottomAnchor, constant: Theme.Spacing.xs),
+            toChipsLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Theme.Spacing.md),
+            toChipsLabel.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 0.45),
+
+            maxTransferLabel.topAnchor.constraint(equalTo: fromChipsLabel.bottomAnchor, constant: Theme.Spacing.sm),
+            maxTransferLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Theme.Spacing.md),
+            maxTransferLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Theme.Spacing.md),
+
+            amountLabel.topAnchor.constraint(equalTo: maxTransferLabel.bottomAnchor, constant: Theme.Spacing.md),
             amountLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Theme.Spacing.md),
 
             amountTextField.topAnchor.constraint(equalTo: amountLabel.bottomAnchor, constant: Theme.Spacing.sm),
@@ -221,6 +267,7 @@ final class TransferViewController: UIViewController {
             toPicker.selectRow(1, inComponent: 0, animated: false)
             toIndex = 1
         }
+        updateChipInfo()
     }
 
     private func setupKeyboardObservers() {
@@ -309,8 +356,13 @@ extension TransferViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         return players.count
     }
 
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return players[row].name
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        let label = (view as? UILabel) ?? UILabel()
+        label.textAlignment = .center
+        label.font = Theme.Fonts.bodyBold
+        label.textColor = Theme.Colors.text
+        label.text = players[row].name
+        return label
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -319,6 +371,7 @@ extension TransferViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         } else {
             toIndex = row
         }
+        updateChipInfo()
     }
 }
 
@@ -327,5 +380,17 @@ extension TransferViewController: UIPickerViewDelegate, UIPickerViewDataSource {
 extension TransferViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         return touch.view == view
+    }
+}
+
+private extension TransferViewController {
+    func updateChipInfo() {
+        guard !players.isEmpty else { return }
+        let fromChips = players[fromIndex].chipCount
+        let toChips = players[toIndex].chipCount
+
+        fromChipsLabel.text = String(format: L10n.Transfer.fromChipsFormat, fromChips)
+        toChipsLabel.text = String(format: L10n.Transfer.toChipsFormat, toChips)
+        maxTransferLabel.text = String(format: L10n.Transfer.maxTransferFormat, fromChips)
     }
 }

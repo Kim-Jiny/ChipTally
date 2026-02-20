@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chiptally.R
 import com.chiptally.data.repository.GameRepositoryImpl
@@ -18,17 +16,21 @@ import com.chiptally.domain.model.Player
 import com.chiptally.domain.model.TransferError
 import com.chiptally.presentation.history.HistoryActivity
 import com.chiptally.presentation.setup.SetupActivity
+import com.chiptally.presentation.common.applySystemBarInsets
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class GameActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityGameBinding
     private val viewModel: GameViewModel by viewModels()
     private lateinit var playerAdapter: PlayerChipAdapter
+    private var latestPlayers: List<Player> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        applySystemBarInsets(binding.root)
 
         viewModel.setRepository(GameRepositoryImpl(this))
         viewModel.loadSession()
@@ -38,13 +40,10 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun setupViews() {
-        playerAdapter = PlayerChipAdapter(
-            players = emptyList(),
-            onTransferClick = { player -> showTransferDialog(player) }
-        )
+        playerAdapter = PlayerChipAdapter(players = emptyList())
 
         binding.recyclerViewPlayers.apply {
-            layoutManager = LinearLayoutManager(this@GameActivity)
+            layoutManager = androidx.recyclerview.widget.GridLayoutManager(this@GameActivity, 2)
             adapter = playerAdapter
         }
 
@@ -56,10 +55,15 @@ class GameActivity : AppCompatActivity() {
         binding.buttonEndGame.setOnClickListener {
             showEndGameConfirmation()
         }
+
+        binding.buttonTransfer.setOnClickListener {
+            showTransferDialog()
+        }
     }
 
     private fun observeViewModel() {
         viewModel.players.observe(this) { players ->
+            latestPlayers = players
             playerAdapter.updatePlayers(players)
         }
 
@@ -90,23 +94,24 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
-    private fun showTransferDialog(fromPlayer: Player) {
-        val players = viewModel.players.value ?: return
-        val otherPlayers = players.filter { it.id != fromPlayer.id }
-        val playerNames = otherPlayers.map { it.name }.toTypedArray()
+    private fun showTransferDialog() {
+        val players = latestPlayers
+        if (players.size < 2) {
+            Toast.makeText(this, getString(R.string.error_invalid_player), Toast.LENGTH_SHORT).show()
+            return
+        }
 
         val intent = Intent(this, TransferActivity::class.java).apply {
-            putExtra(TransferActivity.EXTRA_FROM_PLAYER_INDEX, players.indexOf(fromPlayer))
-            putExtra(TransferActivity.EXTRA_FROM_PLAYER_NAME, fromPlayer.name)
-            putExtra(TransferActivity.EXTRA_FROM_PLAYER_CHIPS, fromPlayer.chipCount)
-            putStringArrayListExtra(TransferActivity.EXTRA_OTHER_PLAYER_NAMES, ArrayList(otherPlayers.map { it.name }))
-            putIntegerArrayListExtra(TransferActivity.EXTRA_OTHER_PLAYER_INDICES, ArrayList(otherPlayers.map { players.indexOf(it) }))
+            putStringArrayListExtra(TransferActivity.EXTRA_PLAYER_NAMES, ArrayList(players.map { it.name }))
+            putIntegerArrayListExtra(TransferActivity.EXTRA_PLAYER_CHIPS, ArrayList(players.map { it.chipCount }))
         }
         startActivityForResult(intent, REQUEST_TRANSFER)
+        @Suppress("DEPRECATION")
+        overridePendingTransition(android.R.anim.fade_in, 0)
     }
 
     private fun showEndGameConfirmation() {
-        AlertDialog.Builder(this)
+        MaterialAlertDialogBuilder(this, R.style.ThemeOverlay_ChipTally_AlertDialog)
             .setTitle(R.string.end_game_title)
             .setMessage(R.string.end_game_message)
             .setPositiveButton(R.string.yes) { _, _ ->
@@ -141,8 +146,7 @@ class GameActivity : AppCompatActivity() {
 }
 
 class PlayerChipAdapter(
-    private var players: List<Player>,
-    private val onTransferClick: (Player) -> Unit
+    private var players: List<Player>
 ) : RecyclerView.Adapter<PlayerChipAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemPlayerChipBinding) : RecyclerView.ViewHolder(binding.root)
@@ -158,10 +162,6 @@ class PlayerChipAdapter(
         val player = players[position]
         holder.binding.textViewPlayerName.text = player.name
         holder.binding.textViewChipCount.text = player.chipCount.toString()
-
-        holder.binding.buttonTransfer.setOnClickListener {
-            onTransferClick(player)
-        }
     }
 
     override fun getItemCount() = players.size

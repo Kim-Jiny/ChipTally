@@ -7,4 +7,25 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="table_felt">#0C402E</color>
+    <color name="table_felt_dark">#082E22</color>
+    <color name="rail">#3F281C</color>
+    <color name="rail_highlight">#5C3E2C</color>
+    <color name="panel">#134F39</color>
+    <color name="inset">#0B3627</color>
+    <color name="card_bg">#104633</color>
+
+    <color name="text_primary">#F8F6F1</color>
+    <color name="text_secondary">#C5C4C0</color>
+    <color name="text_dark">#181412</color>
+
+    <color name="chip_red">#C42D34</color>
+    <color name="chip_red_dark">#8F2026</color>
+    <color name="chip_gold">#D8AA4A</color>
+    <color name="chip_cream">#F4EDDE</color>
+
+    <color name="overlay_dim">#8C000000</color>
+    <color name="success">#34A861</color>
+    <color name="destructive">#D63B39</color>
 </resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:startColor="@color/table_felt"
+        android:endColor="@color/table_felt_dark"
+        android:angle="135" />
+</shape>

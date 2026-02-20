@@ -25,6 +25,7 @@
 "game.endGameTitle" = "End Game";
 "game.endGameMessage" = "Are you sure you want to end the game?";
 "game.end" = "End";
+"game.transferMessage" = "%@ → %@: %d";
 
 // MARK: - Transfer Screen
 "transfer.title" = "Transfer Chips";
@@ -35,6 +36,9 @@
 "transfer.submit" = "Transfer";
 "transfer.invalidAmount" = "Please enter a valid amount";
 "transfer.samePlayer" = "Cannot transfer to the same player";
+"transfer.fromChips" = "Sender: %d";
+"transfer.toChips" = "Receiver: %d";
+"transfer.maxTransfer" = "Max transferable: %d";
 
 // MARK: - History Screen
 "history.title" = "Transaction History";

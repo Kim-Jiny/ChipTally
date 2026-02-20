@@ -25,6 +25,7 @@
 "game.endGameTitle" = "結束遊戲";
 "game.endGameMessage" = "確定要結束遊戲嗎？";
 "game.end" = "結束";
+"game.transferMessage" = "%@ → %@: %d個";
 
 // MARK: - Transfer Screen
 "transfer.title" = "轉移籌碼";
@@ -35,6 +36,9 @@
 "transfer.submit" = "轉移";
 "transfer.invalidAmount" = "請輸入有效數量";
 "transfer.samePlayer" = "不能轉移給同一玩家";
+"transfer.fromChips" = "發送方: %d個";
+"transfer.toChips" = "接收方: %d個";
+"transfer.maxTransfer" = "最大可轉移: %d個";
 
 // MARK: - History Screen
 "history.title" = "交易記錄";

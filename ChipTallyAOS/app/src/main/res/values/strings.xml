@@ -3,8 +3,10 @@
     <string name="app_name">ChipTally</string>
 
     <!-- Setup Screen -->
-    <string name="player_count">Number of Players</string>
+    <string name="subtitle">Chip Calculator</string>
+    <string name="player_count">Players</string>
     <string name="initial_chip_count">Initial Chips</string>
+    <string name="player_names_title">Player Names</string>
     <string name="player_label">Player %1$d</string>
     <string name="player_name_hint">Enter name</string>
     <string name="start_game">Start Game</string>
@@ -17,30 +19,42 @@
     <string name="transfer">Transfer</string>
     <string name="history">History</string>
     <string name="end_game">End Game</string>
+    <string name="history_short">History</string>
+    <string name="end_short">End</string>
+    <string name="inc_players">Increase players</string>
+    <string name="dec_players">Decrease players</string>
 
     <!-- Transfer Screen -->
     <string name="transfer_chips">Transfer Chips</string>
+    <string name="from_player">Sender</string>
     <string name="transfer_from">From: %1$s</string>
-    <string name="available_chips">Available: %1$d chips</string>
-    <string name="to_player">To Player</string>
+    <string name="available_chips">Sender: %1$d</string>
+    <string name="to_player_chips">Receiver: %1$d</string>
+    <string name="max_transfer">Max transfer: %1$d</string>
+    <string name="to_player">Receiver</string>
     <string name="amount">Amount</string>
+    <string name="amount_placeholder">Enter amount</string>
     <string name="cancel">Cancel</string>
-    <string name="confirm">Confirm</string>
+    <string name="confirm">Transfer</string>
 
     <!-- History Screen -->
     <string name="no_transactions">No transactions yet</string>
-    <string name="transaction_format">%1$s → %2$s: %3$d chips</string>
+    <string name="transaction_format">%1$s → %2$s: %3$d</string>
+    <string name="amount_format">+%1$d</string>
 
     <!-- Messages -->
-    <string name="transfer_success">Transferred %1$d chips from %2$s to %3$s</string>
+    <string name="transfer_success">%2$s → %3$s: %1$d</string>
     <string name="error_insufficient_chips">Insufficient chips</string>
     <string name="error_invalid_player">Invalid player</string>
-    <string name="error_same_player">Cannot transfer to self</string>
+    <string name="error_same_player">Cannot transfer to the same player</string>
     <string name="error_invalid_amount">Invalid amount</string>
 
     <!-- Dialog -->
     <string name="end_game_title">End Game</string>
-    <string name="end_game_message">Are you sure you want to end the game? All data will be lost.</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
+    <string name="end_game_message">Are you sure you want to end the game?</string>
+    <string name="yes">End</string>
+    <string name="no">Cancel</string>
+    <string name="reset_title">Reset</string>
+    <string name="reset_message">Reset saved settings?</string>
+    <string name="close">Close</string>
 </resources>

@@ -43,6 +43,7 @@ enum L10n {
         static let endGameTitle = "game.endGameTitle".localized
         static let endGameMessage = "game.endGameMessage".localized
         static let end = "game.end".localized
+        static let transferMessageFormat = "game.transferMessage".localized
     }
 
     // MARK: - Transfer Screen
@@ -55,6 +56,9 @@ enum L10n {
         static let submit = "transfer.submit".localized
         static let invalidAmount = "transfer.invalidAmount".localized
         static let samePlayer = "transfer.samePlayer".localized
+        static let fromChipsFormat = "transfer.fromChips".localized
+        static let toChipsFormat = "transfer.toChips".localized
+        static let maxTransferFormat = "transfer.maxTransfer".localized
     }
 
     // MARK: - History Screen
