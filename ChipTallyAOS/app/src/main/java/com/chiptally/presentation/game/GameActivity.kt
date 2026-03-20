@@ -17,6 +17,7 @@ import com.chiptally.domain.model.TransferError
 import com.chiptally.presentation.history.HistoryActivity
 import com.chiptally.presentation.setup.SetupActivity
 import com.chiptally.presentation.common.applySystemBarInsets
+import com.google.android.gms.ads.AdRequest
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class GameActivity : AppCompatActivity() {
@@ -35,8 +36,13 @@ class GameActivity : AppCompatActivity() {
         viewModel.setRepository(GameRepositoryImpl(this))
         viewModel.loadSession()
 
+        setupAd()
         setupViews()
         observeViewModel()
+    }
+
+    private fun setupAd() {
+        binding.adView.loadAd(AdRequest.Builder().build())
     }
 
     private fun setupViews() {

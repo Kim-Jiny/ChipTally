@@ -18,6 +18,8 @@ import com.chiptally.databinding.ActivitySetupBinding
 import com.chiptally.databinding.ItemPlayerNameBinding
 import com.chiptally.presentation.game.GameActivity
 import com.chiptally.presentation.common.applySystemBarInsets
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class SetupActivity : AppCompatActivity() {
@@ -34,9 +36,15 @@ class SetupActivity : AppCompatActivity() {
 
         viewModel.setRepository(GameRepositoryImpl(this))
 
+        MobileAds.initialize(this)
+        setupAd()
         setupViews()
         observeViewModel()
         viewModel.loadSavedSettings()
+    }
+
+    private fun setupAd() {
+        binding.adView.loadAd(AdRequest.Builder().build())
     }
 
     private fun setupViews() {

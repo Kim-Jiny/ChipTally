@@ -61,6 +61,16 @@
         </LinearLayout>
     </FrameLayout>
 
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:adSize="BANNER"
+        app:adUnitId="ca-app-pub-2707874353926722/5643302048"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutHeader" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewPlayers"
         android:layout_width="0dp"
@@ -71,7 +81,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutHeader" />
+        app:layout_constraintTop_toBottomOf="@id/adView" />
 
     <ImageButton
         android:id="@+id/buttonTransfer"
