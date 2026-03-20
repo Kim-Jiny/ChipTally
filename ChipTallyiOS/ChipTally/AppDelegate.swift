@@ -6,15 +6,23 @@
 //
 
 import UIKit
+import GoogleMobileAds
+import AppTrackingTransparency
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        MobileAds.shared.start(completionHandler: nil)
         return true
+    }
+
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        requestTrackingAuthorization()
+    }
+
+    private func requestTrackingAuthorization() {
+        ATTrackingManager.requestTrackingAuthorization { _ in }
     }
 
     // MARK: UISceneSession Lifecycle

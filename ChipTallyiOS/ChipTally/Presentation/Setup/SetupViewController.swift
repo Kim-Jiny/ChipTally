@@ -4,6 +4,7 @@
 //
 
 import UIKit
+import GoogleMobileAds
 
 protocol SetupViewControllerDelegate: AnyObject {
     func setupViewController(_ controller: SetupViewController, didStartGameWith session: GameSession)
@@ -165,6 +166,8 @@ final class SetupViewController: UIViewController {
         return button
     }()
 
+    private let bannerAdView = BannerAdView(adUnitID: AdConstants.setupBannerAdUnitID)
+
     // MARK: - Init
 
     init(viewModel: SetupViewModel = SetupViewModel()) {
@@ -186,6 +189,7 @@ final class SetupViewController: UIViewController {
         setupKeyboardObservers()
         viewModel.delegate = self
         viewModel.loadSavedSettings()
+        bannerAdView.load(in: self)
     }
 
     deinit {
@@ -198,6 +202,7 @@ final class SetupViewController: UIViewController {
         view.backgroundColor = Theme.Colors.background
 
         view.addSubview(backgroundView)
+        view.addSubview(bannerAdView)
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
 
@@ -230,10 +235,15 @@ final class SetupViewController: UIViewController {
             backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
+            bannerAdView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bannerAdView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bannerAdView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            bannerAdView.heightAnchor.constraint(equalToConstant: AdConstants.bannerHeight),
+
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bannerAdView.topAnchor),
 
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),

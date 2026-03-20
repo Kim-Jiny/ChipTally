@@ -4,6 +4,7 @@
 //
 
 import UIKit
+import GoogleMobileAds
 
 protocol GameViewControllerDelegate: AnyObject {
     func gameViewControllerDidEndGame(_ controller: GameViewController)
@@ -83,6 +84,8 @@ final class GameViewController: UIViewController {
         return collectionView
     }()
 
+    private let bannerAdView = BannerAdView(adUnitID: AdConstants.gameBannerAdUnitID)
+
     private let transferButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = Theme.Colors.chipRed
@@ -113,6 +116,7 @@ final class GameViewController: UIViewController {
         setupCollectionView()
         setupActions()
         viewModel.delegate = self
+        bannerAdView.load(in: self)
     }
 
     override func viewDidLayoutSubviews() {
@@ -131,6 +135,7 @@ final class GameViewController: UIViewController {
         headerView.addSubview(titleLabel)
         headerView.addSubview(historyButton)
         headerView.addSubview(endGameButton)
+        view.addSubview(bannerAdView)
         view.addSubview(collectionView)
         view.addSubview(transferButton)
 
@@ -166,7 +171,12 @@ final class GameViewController: UIViewController {
             historyButton.widthAnchor.constraint(equalToConstant: 36),
             historyButton.heightAnchor.constraint(equalToConstant: 36),
 
-            collectionView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
+            bannerAdView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
+            bannerAdView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bannerAdView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bannerAdView.heightAnchor.constraint(equalToConstant: AdConstants.bannerHeight),
+
+            collectionView.topAnchor.constraint(equalTo: bannerAdView.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),

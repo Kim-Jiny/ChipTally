@@ -1,0 +1,42 @@
+# macOS
+.DS_Store
+._*
+
+# IDE
+.idea/
+*.iml
+*.swp
+*.swo
+*~
+
+# Claude Code
+.claude/
+
+# iOS
+ChipTallyiOS/build/
+ChipTallyiOS/DerivedData/
+ChipTallyiOS/**/*.xcuserstate
+ChipTallyiOS/**/xcuserdata/
+ChipTallyiOS/**/*.xccheckout
+ChipTallyiOS/**/*.xcscmblueprint
+ChipTallyiOS/**/*.moved-aside
+ChipTallyiOS/**/*.hmap
+ChipTallyiOS/**/*.ipa
+ChipTallyiOS/**/*.dSYM.zip
+ChipTallyiOS/**/*.dSYM
+ChipTallyiOS/.build/
+ChipTallyiOS/.swiftpm/
+ChipTallyiOS/Pods/
+ChipTallyiOS/Podfile.lock
+
+# Android
+ChipTallyAOS/.gradle/
+ChipTallyAOS/build/
+ChipTallyAOS/app/build/
+ChipTallyAOS/local.properties
+ChipTallyAOS/.idea/
+ChipTallyAOS/captures/
+ChipTallyAOS/.externalNativeBuild/
+ChipTallyAOS/.cxx/
+*.keystore
+*.jks
