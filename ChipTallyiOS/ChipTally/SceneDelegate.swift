@@ -6,11 +6,14 @@
 //
 
 import UIKit
+import AppTrackingTransparency
+import GoogleMobileAds
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     private var coordinator: AppCoordinator?
+    private var hasRequestedTracking = false
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
@@ -26,6 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
+        requestTrackingAuthorizationIfNeeded()
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
@@ -35,5 +39,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
+    }
+
+    private func requestTrackingAuthorizationIfNeeded() {
+        guard !hasRequestedTracking else { return }
+        hasRequestedTracking = true
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            ATTrackingManager.requestTrackingAuthorization { _ in
+                DispatchQueue.main.async {
+                    MobileAds.shared.start(completionHandler: nil)
+                }
+            }
+        }
     }
 }
