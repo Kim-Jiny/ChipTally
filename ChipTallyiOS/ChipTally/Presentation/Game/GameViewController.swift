@@ -203,6 +203,10 @@ final class GameViewController: UIViewController {
     // MARK: - Actions
 
     @objc private func transferTapped() {
+        guard viewModel.players.count >= 2 else {
+            showToast(message: TransferError.invalidPlayer.localizedDescription, isError: true)
+            return
+        }
         let transferVC = TransferViewController(players: viewModel.players)
         transferVC.delegate = self
         present(transferVC, animated: true)

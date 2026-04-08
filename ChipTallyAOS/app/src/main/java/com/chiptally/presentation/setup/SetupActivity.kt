@@ -148,7 +148,28 @@ class PlayerNameAdapter(
     private val onNameChanged: (Int, String) -> Unit
 ) : RecyclerView.Adapter<PlayerNameAdapter.ViewHolder>() {
 
-    class ViewHolder(val binding: ItemPlayerNameBinding) : RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: ItemPlayerNameBinding) : RecyclerView.ViewHolder(binding.root) {
+        private var currentWatcher: TextWatcher? = null
+
+        fun bind(name: String, position: Int, onNameChanged: (Int, String) -> Unit) {
+            binding.textViewPlayerLabel.text =
+                binding.root.context.getString(R.string.player_label, position + 1)
+
+            currentWatcher?.let(binding.editTextPlayerName::removeTextChangedListener)
+            binding.editTextPlayerName.setText(name)
+            currentWatcher = object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                override fun afterTextChanged(s: Editable?) {
+                    val currentPosition = bindingAdapterPosition
+                    if (currentPosition != RecyclerView.NO_POSITION) {
+                        onNameChanged(currentPosition, s?.toString() ?: "")
+                    }
+                }
+            }
+            binding.editTextPlayerName.addTextChangedListener(currentWatcher)
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemPlayerNameBinding.inflate(
@@ -158,21 +179,7 @@ class PlayerNameAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.textViewPlayerLabel.text =
-            holder.itemView.context.getString(R.string.player_label, position + 1)
-
-        holder.binding.editTextPlayerName.setText(names.getOrNull(position) ?: "")
-
-        holder.binding.editTextPlayerName.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) {
-                val currentPosition = holder.adapterPosition
-                if (currentPosition != RecyclerView.NO_POSITION) {
-                    onNameChanged(currentPosition, s?.toString() ?: "")
-                }
-            }
-        })
+        holder.bind(names.getOrNull(position) ?: "", position, onNameChanged)
     }
 
     override fun getItemCount() = names.size
@@ -184,6 +191,8 @@ class PlayerNameAdapter(
             notifyItemInserted(newNames.size - 1)
         } else if (newNames.size < oldSize) {
             notifyItemRemoved(oldSize - 1)
+        } else {
+            notifyDataSetChanged()
         }
     }
 }

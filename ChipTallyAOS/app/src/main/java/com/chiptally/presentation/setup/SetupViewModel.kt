@@ -53,7 +53,9 @@ class SetupViewModel(
     fun incrementPlayerCount() {
         val current = _playerCount.value ?: minPlayerCount
         if (current < maxPlayerCount) {
-            _playerNames.value?.add("")
+            val updatedNames = _playerNames.value?.toMutableList() ?: mutableListOf()
+            updatedNames.add("")
+            _playerNames.value = updatedNames
             _playerCount.value = current + 1
             validateForm()
         }
@@ -62,7 +64,10 @@ class SetupViewModel(
     fun decrementPlayerCount() {
         val current = _playerCount.value ?: minPlayerCount
         if (current > minPlayerCount) {
-            _playerNames.value?.removeAt(_playerNames.value!!.lastIndex)
+            val updatedNames = _playerNames.value?.toMutableList() ?: return
+            if (updatedNames.isEmpty()) return
+            updatedNames.removeAt(updatedNames.lastIndex)
+            _playerNames.value = updatedNames
             _playerCount.value = current - 1
             validateForm()
         }
@@ -70,9 +75,10 @@ class SetupViewModel(
 
     fun updatePlayerName(index: Int, name: String) {
         _playerNames.value?.let { names ->
-            if (index < names.size) {
-                names[index] = name
-                _playerNames.value = names
+            if (index in names.indices) {
+                val updatedNames = names.toMutableList()
+                updatedNames[index] = name
+                _playerNames.value = updatedNames
                 validateForm()
             }
         }

@@ -90,7 +90,7 @@ final class SetupViewModel {
     }
 
     func updatePlayerName(at index: Int, name: String) {
-        guard index < playerNames.count else { return }
+        guard playerNames.indices.contains(index) else { return }
         playerNames[index] = name
         validateForm()
     }

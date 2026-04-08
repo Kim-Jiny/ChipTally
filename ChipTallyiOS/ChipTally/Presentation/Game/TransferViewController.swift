@@ -266,6 +266,8 @@ final class TransferViewController: UIViewController {
         if players.count > 1 {
             toPicker.selectRow(1, inComponent: 0, animated: false)
             toIndex = 1
+        } else {
+            toIndex = 0
         }
         updateChipInfo()
     }
@@ -322,6 +324,11 @@ final class TransferViewController: UIViewController {
     }
 
     @objc private func transferTapped() {
+        guard players.indices.contains(fromIndex), players.indices.contains(toIndex) else {
+            showAlert(message: L10n.Transfer.invalidAmount)
+            return
+        }
+
         guard let amountText = amountTextField.text,
               let amount = Int(amountText),
               amount > 0 else {
@@ -385,7 +392,12 @@ extension TransferViewController: UIGestureRecognizerDelegate {
 
 private extension TransferViewController {
     func updateChipInfo() {
-        guard !players.isEmpty else { return }
+        guard players.indices.contains(fromIndex), players.indices.contains(toIndex) else {
+            fromChipsLabel.text = String(format: L10n.Transfer.fromChipsFormat, 0)
+            toChipsLabel.text = String(format: L10n.Transfer.toChipsFormat, 0)
+            maxTransferLabel.text = String(format: L10n.Transfer.maxTransferFormat, 0)
+            return
+        }
         let fromChips = players[fromIndex].chipCount
         let toChips = players[toIndex].chipCount
 

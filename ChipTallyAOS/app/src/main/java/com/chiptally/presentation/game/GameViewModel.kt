@@ -47,7 +47,7 @@ class GameViewModel(
         val session = _session ?: return
         val players = session.players
 
-        if (fromIndex >= players.size || toIndex >= players.size) return
+        if (fromIndex !in players.indices || toIndex !in players.indices) return
 
         val fromPlayer = players[fromIndex]
         val toPlayer = players[toIndex]

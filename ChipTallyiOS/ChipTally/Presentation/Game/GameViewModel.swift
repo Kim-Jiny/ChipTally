@@ -38,7 +38,7 @@ final class GameViewModel {
     }
 
     func transferChips(fromIndex: Int, toIndex: Int, amount: Int) {
-        guard fromIndex < players.count, toIndex < players.count else { return }
+        guard players.indices.contains(fromIndex), players.indices.contains(toIndex) else { return }
 
         let fromPlayer = players[fromIndex]
         let toPlayer = players[toIndex]
