@@ -49,3 +49,19 @@
 "error.invalidPlayer" = "無効なプレイヤーです";
 "error.samePlayer" = "同じプレイヤーには送信できません";
 "error.invalidAmount" = "無効な数量です";
+
+// MARK: - Pot / Betting
+"pot.title" = "ポット";
+"pot.bet" = "ベット";
+"pot.placeBet" = "ベットする";
+"pot.amount" = "数量";
+"pot.betPlayer" = "ベットする人";
+"pot.holdingChips" = "保有: %d";
+"pot.roundBet" = "この回: %d";
+"pot.takePot" = "ポットを取る";
+"pot.takePotMessage" = "%@ がポットの %d 枚をすべて取りますか？";
+"pot.betPlaced" = "%@ が %d ベット";
+"pot.potWon" = "%@ がポット %d を獲得";
+"error.emptyPot" = "ポットが空です";
+"transfer.allIn" = "オールイン";
+"transfer.quickAmount" = "+%d";

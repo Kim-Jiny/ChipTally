@@ -14,6 +14,8 @@ enum TransferError: Error, LocalizedError {
     case invalidPlayer
     case samePlayer
     case invalidAmount
+    /// 팟이 비어 있어 가져갈 것이 없음.
+    case emptyPot
 
     var errorDescription: String? {
         switch self {
@@ -25,6 +27,8 @@ enum TransferError: Error, LocalizedError {
             return "error.samePlayer".localized
         case .invalidAmount:
             return "error.invalidAmount".localized
+        case .emptyPot:
+            return "error.emptyPot".localized
         }
     }
 }
@@ -51,7 +55,7 @@ final class TransferChipsUseCase: TransferChipsUseCaseProtocol {
         session.players[fromIndex].chipCount -= amount
         session.players[toIndex].chipCount += amount
 
-        let transaction = Transaction(
+        let transaction = Transaction.transfer(
             fromPlayerId: fromPlayerId,
             toPlayerId: toPlayerId,
             amount: amount

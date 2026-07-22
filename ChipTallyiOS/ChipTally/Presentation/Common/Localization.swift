@@ -59,6 +59,23 @@ enum L10n {
         static let fromChipsFormat = "transfer.fromChips".localized
         static let toChipsFormat = "transfer.toChips".localized
         static let maxTransferFormat = "transfer.maxTransfer".localized
+        static let allIn = "transfer.allIn".localized
+        static let quickAmountFormat = "transfer.quickAmount".localized
+    }
+
+    // MARK: - Pot / Betting
+    enum Pot {
+        static let title = "pot.title".localized
+        static let bet = "pot.bet".localized
+        static let amount = "pot.amount".localized
+        static let placeBet = "pot.placeBet".localized
+        static let betPlayer = "pot.betPlayer".localized
+        static let holdingChipsFormat = "pot.holdingChips".localized
+        static let roundBetFormat = "pot.roundBet".localized
+        static let takePot = "pot.takePot".localized
+        static let takePotMessageFormat = "pot.takePotMessage".localized
+        static let betPlacedFormat = "pot.betPlaced".localized
+        static let potWonFormat = "pot.potWon".localized
     }
 
     // MARK: - History Screen
@@ -73,5 +90,6 @@ enum L10n {
         static let invalidPlayer = "error.invalidPlayer".localized
         static let samePlayer = "error.samePlayer".localized
         static let invalidAmount = "error.invalidAmount".localized
+        static let emptyPot = "error.emptyPot".localized
     }
 }

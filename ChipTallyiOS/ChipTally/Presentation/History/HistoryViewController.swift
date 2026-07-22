@@ -126,14 +126,29 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
         }
 
         let transaction = viewModel.transactions.reversed()[indexPath.row]
-        let fromName = viewModel.getPlayerName(for: transaction.fromPlayerId)
-        let toName = viewModel.getPlayerName(for: transaction.toPlayerId)
+
+        // 베팅/획득은 상대가 사람이 아니라 팟이다.
+        let potLabel = L10n.Pot.title
+        let fromName: String
+        let toName: String
+        switch transaction.type {
+        case .bet:
+            fromName = viewModel.getPlayerName(for: transaction.fromPlayerId)
+            toName = potLabel
+        case .potWin:
+            fromName = potLabel
+            toName = viewModel.getPlayerName(for: transaction.toPlayerId)
+        case .transfer:
+            fromName = viewModel.getPlayerName(for: transaction.fromPlayerId)
+            toName = viewModel.getPlayerName(for: transaction.toPlayerId)
+        }
 
         cell.configure(
             fromName: fromName,
             toName: toName,
             amount: transaction.amount,
-            timestamp: transaction.timestamp
+            timestamp: transaction.timestamp,
+            type: transaction.type
         )
         return cell
     }

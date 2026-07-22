@@ -105,10 +105,12 @@ final class TransactionCell: UITableViewCell {
         ])
     }
 
-    func configure(fromName: String, toName: String, amount: Int, timestamp: Date) {
+    func configure(fromName: String, toName: String, amount: Int, timestamp: Date, type: TransactionType = .transfer) {
         fromLabel.text = fromName
         toLabel.text = toName
         amountLabel.text = "+\(amount)"
+        // 팟이 걸린 줄은 금색으로 구분한다.
+        amountLabel.textColor = type == .transfer ? Theme.Colors.chipCream : Theme.Colors.chipGold
 
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm:ss"

@@ -13,8 +13,10 @@ final class TransferViewController: UIViewController {
     weak var delegate: TransferViewControllerDelegate?
 
     private let players: [Player]
-    private var fromIndex: Int = 0
-    private var toIndex: Int = 1
+    private static let quickAmounts = [10, 25, 50]
+
+    private var fromIndex: Int
+    private var toIndex: Int
     private var containerCenterYConstraint: NSLayoutConstraint?
 
     // MARK: - UI Components
@@ -62,12 +64,13 @@ final class TransferViewController: UIViewController {
         return picker
     }()
 
-    private let arrowImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "arrow.right.circle.fill")
-        imageView.tintColor = Theme.Colors.chipGold
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
+    /// 보내는/받는 사람 맞바꾸기. 예전엔 장식용 화살표였다.
+    private let swapButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "arrow.left.arrow.right.circle.fill"), for: .normal)
+        button.tintColor = Theme.Colors.chipGold
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
 
     private let toLabel: UILabel = {
@@ -130,6 +133,23 @@ final class TransferViewController: UIViewController {
         return textField
     }()
 
+    private lazy var quickButtons: [OutlineButton] = {
+        var buttons = Self.quickAmounts.map { amount in
+            OutlineButton(title: String(format: L10n.Transfer.quickAmountFormat, amount))
+        }
+        buttons.append(OutlineButton(title: L10n.Transfer.allIn))
+        return buttons
+    }()
+
+    private lazy var quickStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: quickButtons)
+        stack.axis = .horizontal
+        stack.distribution = .fillEqually
+        stack.spacing = Theme.Spacing.sm
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+
     private let transferButton: PrimaryButton = {
         let button = PrimaryButton()
         button.setTitle(L10n.Transfer.submit, for: .normal)
@@ -139,8 +159,11 @@ final class TransferViewController: UIViewController {
 
     // MARK: - Init
 
-    init(players: [Player]) {
+    init(players: [Player], fromIndex: Int = 0) {
         self.players = players
+        self.fromIndex = players.indices.contains(fromIndex) ? fromIndex : 0
+        // 보내는 사람과 겹치지 않게 받는 사람을 고른다.
+        self.toIndex = self.fromIndex == 0 ? min(1, players.count - 1) : 0
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .overFullScreen
         modalTransitionStyle = .crossDissolve
@@ -174,7 +197,7 @@ final class TransferViewController: UIViewController {
         containerView.addSubview(closeButton)
         containerView.addSubview(fromLabel)
         containerView.addSubview(fromPicker)
-        containerView.addSubview(arrowImageView)
+        containerView.addSubview(swapButton)
         containerView.addSubview(toLabel)
         containerView.addSubview(toPicker)
         containerView.addSubview(amountLabel)
@@ -182,6 +205,7 @@ final class TransferViewController: UIViewController {
         containerView.addSubview(toChipsLabel)
         containerView.addSubview(maxTransferLabel)
         containerView.addSubview(amountTextField)
+        containerView.addSubview(quickStack)
         containerView.addSubview(transferButton)
 
         containerView.addShadow(opacity: 0.35, radius: 16, offset: CGSize(width: 0, height: 10))
@@ -209,10 +233,10 @@ final class TransferViewController: UIViewController {
             fromPicker.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 0.4),
             fromPicker.heightAnchor.constraint(equalToConstant: 120),
 
-            arrowImageView.centerYAnchor.constraint(equalTo: fromPicker.centerYAnchor),
-            arrowImageView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            arrowImageView.widthAnchor.constraint(equalToConstant: 32),
-            arrowImageView.heightAnchor.constraint(equalToConstant: 32),
+            swapButton.centerYAnchor.constraint(equalTo: fromPicker.centerYAnchor),
+            swapButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            swapButton.widthAnchor.constraint(equalToConstant: 40),
+            swapButton.heightAnchor.constraint(equalToConstant: 40),
 
             toLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Theme.Spacing.lg),
             toLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Theme.Spacing.md),
@@ -241,7 +265,12 @@ final class TransferViewController: UIViewController {
             amountTextField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Theme.Spacing.md),
             amountTextField.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Theme.Spacing.md),
 
-            transferButton.topAnchor.constraint(equalTo: amountTextField.bottomAnchor, constant: Theme.Spacing.lg),
+            quickStack.topAnchor.constraint(equalTo: amountTextField.bottomAnchor, constant: Theme.Spacing.sm),
+            quickStack.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Theme.Spacing.md),
+            quickStack.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Theme.Spacing.md),
+            quickStack.heightAnchor.constraint(equalToConstant: 44),
+
+            transferButton.topAnchor.constraint(equalTo: quickStack.bottomAnchor, constant: Theme.Spacing.md),
             transferButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Theme.Spacing.md),
             transferButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Theme.Spacing.md),
             transferButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -Theme.Spacing.lg)
@@ -251,6 +280,19 @@ final class TransferViewController: UIViewController {
     private func setupActions() {
         closeButton.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
         transferButton.addTarget(self, action: #selector(transferTapped), for: .touchUpInside)
+        swapButton.addTarget(self, action: #selector(swapTapped), for: .touchUpInside)
+        amountTextField.addTarget(self, action: #selector(amountChanged), for: .editingChanged)
+
+        for (index, button) in quickButtons.enumerated() {
+            button.tag = index
+            button.addTarget(self, action: #selector(quickTapped(_:)), for: .touchUpInside)
+        }
+
+        // '최대 전송 가능' 을 눌러 전액을 채울 수 있게 한다.
+        maxTransferLabel.isUserInteractionEnabled = true
+        maxTransferLabel.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(maxTapped))
+        )
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(backgroundTapped))
         tapGesture.delegate = self
@@ -263,12 +305,8 @@ final class TransferViewController: UIViewController {
         toPicker.delegate = self
         toPicker.dataSource = self
 
-        if players.count > 1 {
-            toPicker.selectRow(1, inComponent: 0, animated: false)
-            toIndex = 1
-        } else {
-            toIndex = 0
-        }
+        fromPicker.selectRow(fromIndex, inComponent: 0, animated: false)
+        toPicker.selectRow(toIndex, inComponent: 0, animated: false)
         updateChipInfo()
     }
 
@@ -317,6 +355,33 @@ final class TransferViewController: UIViewController {
 
     @objc private func closeTapped() {
         dismiss(animated: true)
+    }
+
+    @objc private func swapTapped() {
+        let newFrom = toIndex, newTo = fromIndex
+        fromIndex = newFrom
+        toIndex = newTo
+        fromPicker.selectRow(newFrom, inComponent: 0, animated: true)
+        toPicker.selectRow(newTo, inComponent: 0, animated: true)
+        updateChipInfo()
+    }
+
+    @objc private func amountChanged() {
+        updateChipInfo()
+    }
+
+    @objc private func maxTapped() {
+        guard players.indices.contains(fromIndex) else { return }
+        fillAmount(players[fromIndex].chipCount)
+    }
+
+    @objc private func quickTapped(_ sender: OutlineButton) {
+        guard players.indices.contains(fromIndex) else { return }
+        if sender.tag < Self.quickAmounts.count {
+            fillAmount((Int(amountTextField.text ?? "") ?? 0) + Self.quickAmounts[sender.tag])
+        } else {
+            fillAmount(players[fromIndex].chipCount)   // 올인
+        }
     }
 
     @objc private func backgroundTapped() {
@@ -391,6 +456,12 @@ extension TransferViewController: UIGestureRecognizerDelegate {
 }
 
 private extension TransferViewController {
+    func fillAmount(_ value: Int) {
+        guard players.indices.contains(fromIndex) else { return }
+        amountTextField.text = "\(min(max(value, 0), players[fromIndex].chipCount))"
+        updateChipInfo()
+    }
+
     func updateChipInfo() {
         guard players.indices.contains(fromIndex), players.indices.contains(toIndex) else {
             fromChipsLabel.text = String(format: L10n.Transfer.fromChipsFormat, 0)
@@ -403,6 +474,23 @@ private extension TransferViewController {
 
         fromChipsLabel.text = String(format: L10n.Transfer.fromChipsFormat, fromChips)
         toChipsLabel.text = String(format: L10n.Transfer.toChipsFormat, toChips)
-        maxTransferLabel.text = String(format: L10n.Transfer.maxTransferFormat, fromChips)
+
+        // 전송을 눌러봐야 알던 걸 입력 중에 바로 보여준다.
+        let amount = Int(amountTextField.text ?? "") ?? 0
+        let samePlayer = fromIndex == toIndex
+
+        if samePlayer {
+            maxTransferLabel.text = L10n.Error.samePlayer
+            maxTransferLabel.textColor = Theme.Colors.destructive
+        } else if amount > fromChips {
+            maxTransferLabel.text = L10n.Error.insufficientChips
+            maxTransferLabel.textColor = Theme.Colors.destructive
+        } else {
+            maxTransferLabel.text = String(format: L10n.Transfer.maxTransferFormat, fromChips)
+            maxTransferLabel.textColor = Theme.Colors.chipGold
+        }
+
+        transferButton.isEnabled = !samePlayer && amount > 0 && amount <= fromChips
+        quickButtons.forEach { $0.isEnabled = !samePlayer && fromChips > 0 }
     }
 }

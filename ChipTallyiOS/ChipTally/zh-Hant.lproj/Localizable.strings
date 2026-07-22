@@ -49,3 +49,19 @@
 "error.invalidPlayer" = "無效的玩家";
 "error.samePlayer" = "不能轉移給同一玩家";
 "error.invalidAmount" = "無效的數量";
+
+// MARK: - Pot / Betting
+"pot.title" = "彩池";
+"pot.bet" = "下注";
+"pot.placeBet" = "下注";
+"pot.amount" = "數量";
+"pot.betPlayer" = "誰下注";
+"pot.holdingChips" = "持有：%d";
+"pot.roundBet" = "本輪：%d";
+"pot.takePot" = "拿走彩池";
+"pot.takePotMessage" = "%@ 拿走彩池全部 %d 籌碼？";
+"pot.betPlaced" = "%@ 下注 %d";
+"pot.potWon" = "%@ 贏得彩池：%d";
+"error.emptyPot" = "彩池是空的";
+"transfer.allIn" = "全下";
+"transfer.quickAmount" = "+%d";

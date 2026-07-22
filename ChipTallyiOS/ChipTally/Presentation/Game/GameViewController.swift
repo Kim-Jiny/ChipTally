@@ -84,6 +84,37 @@ final class GameViewController: UIViewController {
         return collectionView
     }()
 
+    /// 팟. 누르면 베팅/회수 화면이 열린다.
+    private let potBarView: UIControl = {
+        let view = UIControl()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    private let potTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = L10n.Pot.title
+        label.font = Theme.Fonts.caption
+        label.textColor = Theme.Colors.secondaryText
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    private let potAmountLabel: UILabel = {
+        let label = UILabel()
+        label.font = Theme.Fonts.headline
+        label.textColor = Theme.Colors.chipGold
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    private let potChevronView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(systemName: "chevron.right"))
+        imageView.tintColor = Theme.Colors.secondaryText
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+
     private let bannerAdView = BannerAdView(adUnitID: AdConstants.gameBannerAdUnitID)
 
     private let transferButton: UIButton = {
@@ -116,12 +147,24 @@ final class GameViewController: UIViewController {
         setupCollectionView()
         setupActions()
         viewModel.delegate = self
+        updatePotDisplay()
         bannerAdView.load(in: self)
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         transferButton.layer.cornerRadius = transferButton.bounds.height / 2
+        centerCardsIfContentFits()
+    }
+
+    /// 인원이 적으면 카드가 위에 몰려 아래가 통째로 비어 보인다.
+    /// 내용이 화면보다 짧을 때만 위쪽 여백을 줘 세로 가운데로 모은다.
+    private func centerCardsIfContentFits() {
+        let contentHeight = collectionView.collectionViewLayout.collectionViewContentSize.height
+        let inset = max((collectionView.bounds.height - contentHeight) / 2, 0)
+        // 값이 그대로면 건드리지 않는다. contentInset 변경이 다시 레이아웃을 부른다.
+        guard abs(collectionView.contentInset.top - inset) > 0.5 else { return }
+        collectionView.contentInset.top = inset
     }
 
     // MARK: - Setup
@@ -135,6 +178,10 @@ final class GameViewController: UIViewController {
         headerView.addSubview(titleLabel)
         headerView.addSubview(historyButton)
         headerView.addSubview(endGameButton)
+        view.addSubview(potBarView)
+        potBarView.addSubview(potTitleLabel)
+        potBarView.addSubview(potAmountLabel)
+        potBarView.addSubview(potChevronView)
         view.addSubview(bannerAdView)
         view.addSubview(collectionView)
         view.addSubview(transferButton)
@@ -171,18 +218,33 @@ final class GameViewController: UIViewController {
             historyButton.widthAnchor.constraint(equalToConstant: 36),
             historyButton.heightAnchor.constraint(equalToConstant: 36),
 
-            bannerAdView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
+            potBarView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
+            potBarView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            potBarView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            potBarView.heightAnchor.constraint(equalToConstant: 48),
+
+            potTitleLabel.centerYAnchor.constraint(equalTo: potBarView.centerYAnchor),
+            potTitleLabel.trailingAnchor.constraint(equalTo: potAmountLabel.leadingAnchor, constant: -Theme.Spacing.sm),
+
+            potAmountLabel.centerYAnchor.constraint(equalTo: potBarView.centerYAnchor),
+            potAmountLabel.centerXAnchor.constraint(equalTo: potBarView.centerXAnchor),
+
+            potChevronView.centerYAnchor.constraint(equalTo: potBarView.centerYAnchor),
+            potChevronView.leadingAnchor.constraint(equalTo: potAmountLabel.trailingAnchor, constant: Theme.Spacing.sm),
+
+            // 배너는 화면 최하단. 콘텐츠보다 먼저 눈에 들어오지 않게 한다.
+            bannerAdView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             bannerAdView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             bannerAdView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bannerAdView.heightAnchor.constraint(equalToConstant: AdConstants.bannerHeight),
+            bannerAdView.heightAnchor.constraint(equalToConstant: BannerAdView.adaptiveHeight(for: UIScreen.main.bounds.width)),
 
-            collectionView.topAnchor.constraint(equalTo: bannerAdView.bottomAnchor),
+            collectionView.topAnchor.constraint(equalTo: potBarView.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: transferButton.topAnchor),
 
             transferButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            transferButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Theme.Spacing.lg),
+            transferButton.bottomAnchor.constraint(equalTo: bannerAdView.topAnchor, constant: -Theme.Spacing.md),
             transferButton.widthAnchor.constraint(equalToConstant: 68),
             transferButton.heightAnchor.constraint(equalToConstant: 68)
         ])
@@ -198,6 +260,13 @@ final class GameViewController: UIViewController {
         transferButton.addTarget(self, action: #selector(transferTapped), for: .touchUpInside)
         historyButton.addTarget(self, action: #selector(historyTapped), for: .touchUpInside)
         endGameButton.addTarget(self, action: #selector(endGameTapped), for: .touchUpInside)
+        potBarView.addTarget(self, action: #selector(potTapped), for: .touchUpInside)
+    }
+
+    private func updatePotDisplay() {
+        potAmountLabel.text = "\(viewModel.pot)"
+        // 팟이 비면 눈에 덜 띄게 해서 지금 판돈이 걸려 있는지 한눈에 보이게 한다.
+        potBarView.alpha = viewModel.pot > 0 ? 1.0 : 0.55
     }
 
     // MARK: - Actions
@@ -207,9 +276,25 @@ final class GameViewController: UIViewController {
             showToast(message: TransferError.invalidPlayer.localizedDescription, isError: true)
             return
         }
-        let transferVC = TransferViewController(players: viewModel.players)
+        presentTransfer(fromIndex: 0)
+    }
+
+    private func presentTransfer(fromIndex: Int) {
+        let transferVC = TransferViewController(players: viewModel.players, fromIndex: fromIndex)
         transferVC.delegate = self
         present(transferVC, animated: true)
+    }
+
+    @objc private func potTapped() {
+        guard !viewModel.players.isEmpty else { return }
+        let roundBets = viewModel.players.indices.map { viewModel.currentRoundBet(playerIndex: $0) }
+        let potVC = PotViewController(
+            players: viewModel.players,
+            roundBets: roundBets,
+            pot: viewModel.pot
+        )
+        potVC.delegate = self
+        present(potVC, animated: true)
     }
 
     @objc private func historyTapped() {
@@ -297,7 +382,20 @@ extension GameViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let spacing = Theme.Spacing.md * 2 + Theme.Spacing.sm
         let width = (collectionView.bounds.width - spacing) / 2
-        return CGSize(width: width, height: 170)
+
+        // 남는 세로 공간을 카드가 나눠 갖게 한다. 인원이 적을 때 화면 아래쪽이
+        // 통째로 비어 보이던 문제를 줄인다.
+        let rows = ceil(Double(viewModel.players.count) / 2.0)
+        let available = collectionView.bounds.height - Theme.Spacing.md * 2
+        let height = min(max((available - Theme.Spacing.sm * (rows - 1)) / rows, 128), 260)
+
+        return CGSize(width: width, height: height)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        guard viewModel.players.count >= 2 else { return }
+        presentTransfer(fromIndex: indexPath.item)
     }
 }
 
@@ -309,11 +407,32 @@ extension GameViewController: TransferViewControllerDelegate {
     }
 }
 
+// MARK: - PotViewControllerDelegate
+
+extension GameViewController: PotViewControllerDelegate {
+    func potViewController(_ controller: PotViewController, didBet playerIndex: Int, amount: Int) {
+        viewModel.bet(playerIndex: playerIndex, amount: amount)
+    }
+
+    func potViewController(_ controller: PotViewController, didTakePot winnerIndex: Int) {
+        viewModel.collectPot(winnerIndex: winnerIndex)
+    }
+}
+
 // MARK: - GameViewModelDelegate
 
 extension GameViewController: GameViewModelDelegate {
     func didUpdateSession() {
         collectionView.reloadData()
+        updatePotDisplay()
+    }
+
+    func didPlaceBet(playerName: String, amount: Int) {
+        showToast(message: String(format: L10n.Pot.betPlacedFormat, playerName, amount))
+    }
+
+    func didWinPot(playerName: String, amount: Int) {
+        showToast(message: String(format: L10n.Pot.potWonFormat, playerName, amount))
     }
 
     func didTransferChips(transaction: Transaction) {

@@ -40,19 +40,23 @@ private struct GameSessionData: Codable {
     let transactions: [TransactionData]
     let initialChipCount: Int
     let createdAt: Date
+    let pot: Int?
 
     init(from session: GameSession) {
         self.players = session.players.map { PlayerData(from: $0) }
         self.transactions = session.transactions.map { TransactionData(from: $0) }
         self.initialChipCount = session.initialChipCount
         self.createdAt = session.createdAt
+        self.pot = session.pot
     }
 
     func toGameSession() -> GameSession {
+        // pot 이 없던 시절에 저장된 세션도 읽을 수 있어야 한다.
         var session = GameSession(
             players: players.map { $0.toPlayer() },
             initialChipCount: initialChipCount,
-            createdAt: createdAt
+            createdAt: createdAt,
+            pot: pot ?? 0
         )
         session.transactions = transactions.map { $0.toTransaction() }
         return session
@@ -81,6 +85,7 @@ private struct TransactionData: Codable {
     let toPlayerId: UUID
     let amount: Int
     let timestamp: Date
+    let type: TransactionType?
 
     init(from transaction: Transaction) {
         self.id = transaction.id
@@ -88,15 +93,18 @@ private struct TransactionData: Codable {
         self.toPlayerId = transaction.toPlayerId
         self.amount = transaction.amount
         self.timestamp = transaction.timestamp
+        self.type = transaction.type
     }
 
     func toTransaction() -> Transaction {
+        // type 이 없던 시절 기록은 전부 1:1 전송이었다.
         Transaction(
             id: id,
             fromPlayerId: fromPlayerId,
             toPlayerId: toPlayerId,
             amount: amount,
-            timestamp: timestamp
+            timestamp: timestamp,
+            type: type ?? .transfer
         )
     }
 }

@@ -49,3 +49,19 @@
 "error.invalidPlayer" = "Invalid player";
 "error.samePlayer" = "Cannot transfer to the same player";
 "error.invalidAmount" = "Invalid amount";
+
+// MARK: - Pot / Betting
+"pot.title" = "Pot";
+"pot.bet" = "Bet";
+"pot.placeBet" = "Place bet";
+"pot.amount" = "Amount";
+"pot.betPlayer" = "Who is betting";
+"pot.holdingChips" = "Holding: %d";
+"pot.roundBet" = "This round: %d";
+"pot.takePot" = "Take the pot";
+"pot.takePotMessage" = "%@ takes all %d chips?";
+"pot.betPlaced" = "%@ bet %d";
+"pot.potWon" = "%@ took the pot: %d";
+"error.emptyPot" = "The pot is empty";
+"transfer.allIn" = "All in";
+"transfer.quickAmount" = "+%d";

@@ -356,6 +356,8 @@ final class SetupViewController: UIViewController {
         UIView.animate(withDuration: duration) {
             self.scrollView.contentInset = contentInsets
             self.scrollView.scrollIndicatorInsets = contentInsets
+            // 배너가 키보드 바로 위에 남으면 오터치를 유발한다. 입력 중에는 감춘다.
+            self.bannerAdView.alpha = 0
         }
     }
 
@@ -367,6 +369,7 @@ final class SetupViewController: UIViewController {
         UIView.animate(withDuration: duration) {
             self.scrollView.contentInset = .zero
             self.scrollView.scrollIndicatorInsets = .zero
+            self.bannerAdView.alpha = 1
         }
     }
 

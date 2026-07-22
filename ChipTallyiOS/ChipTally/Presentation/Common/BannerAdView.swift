@@ -23,7 +23,15 @@ final class BannerAdView: UIView {
     }
 
     func load(in viewController: UIViewController) {
-        let bannerView = BannerView(adSize: AdSizeBanner)
+        // 이미 붙였으면 다시 만들지 않는다.
+        guard bannerView == nil else { return }
+
+        // 고정 AdSizeBanner(320pt)는 요즘 기기 폭에서 좌우가 남아 광고가 떠 보인다.
+        // 실제 폭에 맞춘 adaptive 배너를 쓴다.
+        let width = bounds.width > 0 ? bounds.width : UIScreen.main.bounds.width
+        let adSize = currentOrientationAnchoredAdaptiveBanner(width: width)
+
+        let bannerView = BannerView(adSize: adSize)
         bannerView.adUnitID = adUnitID
         bannerView.rootViewController = viewController
         bannerView.translatesAutoresizingMaskIntoConstraints = false
@@ -37,6 +45,11 @@ final class BannerAdView: UIView {
 
         self.bannerView = bannerView
         bannerView.load(Request())
+    }
+
+    /// adaptive 배너의 실제 높이. 레이아웃에서 자리를 미리 잡는 데 쓴다.
+    static func adaptiveHeight(for width: CGFloat) -> CGFloat {
+        currentOrientationAnchoredAdaptiveBanner(width: width).size.height
     }
 }
 

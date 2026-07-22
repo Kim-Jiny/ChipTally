@@ -49,3 +49,19 @@
 "error.invalidPlayer" = "Jugador inválido";
 "error.samePlayer" = "No se puede transferir al mismo jugador";
 "error.invalidAmount" = "Cantidad inválida";
+
+// MARK: - Pot / Betting
+"pot.title" = "Bote";
+"pot.bet" = "Apostar";
+"pot.placeBet" = "Apostar";
+"pot.amount" = "Cantidad";
+"pot.betPlayer" = "Quién apuesta";
+"pot.holdingChips" = "Tiene: %d";
+"pot.roundBet" = "Esta ronda: %d";
+"pot.takePot" = "Llevarse el bote";
+"pot.takePotMessage" = "¿%@ se lleva las %d fichas del bote?";
+"pot.betPlaced" = "%@ apostó %d";
+"pot.potWon" = "%@ se llevó el bote: %d";
+"error.emptyPot" = "El bote está vacío";
+"transfer.allIn" = "Todo";
+"transfer.quickAmount" = "+%d";

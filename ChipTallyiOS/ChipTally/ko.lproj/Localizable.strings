@@ -49,3 +49,19 @@
 "error.invalidPlayer" = "유효하지 않은 플레이어입니다";
 "error.samePlayer" = "같은 플레이어에게 전송할 수 없습니다";
 "error.invalidAmount" = "유효하지 않은 금액입니다";
+
+// MARK: - Pot / Betting
+"pot.title" = "팟";
+"pot.bet" = "베팅";
+"pot.placeBet" = "베팅하기";
+"pot.amount" = "수량";
+"pot.betPlayer" = "베팅할 사람";
+"pot.holdingChips" = "보유: %d개";
+"pot.roundBet" = "이번 판: %d개";
+"pot.takePot" = "팟 가져가기";
+"pot.takePotMessage" = "%@님이 팟 %d개를 전부 가져갈까요?";
+"pot.betPlaced" = "%@ 베팅 %d개";
+"pot.potWon" = "%@님이 팟 %d개 획득";
+"error.emptyPot" = "팟이 비어 있습니다";
+"transfer.allIn" = "올인";
+"transfer.quickAmount" = "+%d";
