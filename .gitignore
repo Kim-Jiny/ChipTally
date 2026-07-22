@@ -40,3 +40,6 @@ ChipTallyAOS/.externalNativeBuild/
 ChipTallyAOS/.cxx/
 *.keystore
 *.jks
+
+# 빌드 산출물 (AAB / IPA / 아카이브)
+dist/
