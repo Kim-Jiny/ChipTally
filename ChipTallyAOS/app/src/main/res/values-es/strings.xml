@@ -36,6 +36,10 @@
     <string name="amount_placeholder">Ingrese cantidad</string>
     <string name="cancel">Cancelar</string>
     <string name="confirm">Transferir</string>
+    <string name="quick_amount">+%1$d</string>
+    <string name="all_in">Todo</string>
+    <string name="swap_players">Intercambiar emisor y receptor</string>
+    <string name="tap_to_send">Toca un jugador para enviar fichas</string>
 
     <!-- History Screen -->
     <string name="no_transactions">No hay transacciones todavía</string>
@@ -57,4 +61,19 @@
     <string name="reset_title">Restablecer</string>
     <string name="reset_message">¿Restablecer la configuración guardada?</string>
     <string name="close">Cerrar</string>
+    <string name="pot">Bote</string>
+    <string name="pot_open">Abrir bote</string>
+    <string name="bet">Apostar</string>
+    <string name="place_bet">Apostar</string>
+    <string name="bet_player">Quién apuesta</string>
+    <string name="round_bet">Esta ronda: %1$d</string>
+    <string name="take_pot">Llevarse el bote</string>
+    <string name="take_pot_title">Llevarse el bote</string>
+    <string name="take_pot_message">¿%1$s se lleva las %2$d fichas del bote?</string>
+    <string name="bet_placed">%1$s apostó %2$d</string>
+    <string name="pot_won">%1$s se llevó el bote: %2$d</string>
+    <string name="error_empty_pot">El bote está vacío</string>
+    <string name="history_bet">%1$s → Bote</string>
+    <string name="history_pot_win">Bote → %1$s</string>
+    <string name="holding_chips">Tiene: %1$d</string>
 </resources>

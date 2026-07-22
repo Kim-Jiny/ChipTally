@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/overlayBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,7 +15,6 @@
         android:layout_marginHorizontal="24dp"
         android:scrollbars="none">
 
-        <!-- Container card (like iOS containerView) -->
         <LinearLayout
             android:id="@+id/containerView"
             android:layout_width="match_parent"
@@ -26,17 +26,16 @@
             android:paddingTop="24dp"
             android:paddingBottom="24dp">
 
-            <!-- Title + Close button -->
+            <!-- 제목 + 닫기 -->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/textViewTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/transfer_chips"
+                    android:text="@string/pot"
                     android:textColor="@color/text_primary"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -53,119 +52,63 @@
                     android:src="@drawable/ic_close" />
             </FrameLayout>
 
-            <!-- From / To pickers side by side -->
-            <LinearLayout
+            <!-- 팟 총액 -->
+            <TextView
+                android:id="@+id/textViewPotAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:orientation="horizontal">
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:textColor="@color/chip_gold"
+                android:textSize="44sp"
+                android:textStyle="bold"
+                tools:text="125" />
 
-                <!-- From column -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/textViewFromPlayer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/from_player"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="14sp" />
-
-                    <Spinner
-                        android:id="@+id/spinnerFromPlayer"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:layout_marginTop="4dp"
-                        android:background="@drawable/bg_input"
-                        android:padding="8dp" />
-                </LinearLayout>
-
-                <!-- 보내는/받는 사람 맞바꾸기 -->
-                <ImageButton
-                    android:id="@+id/buttonSwap"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginHorizontal="2dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/swap_players"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_transfer"
-                    app:tint="@color/chip_gold" />
-
-                <!-- To column -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/textViewToLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/to_player"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="14sp" />
-
-                    <Spinner
-                        android:id="@+id/spinnerToPlayer"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:layout_marginTop="4dp"
-                        android:background="@drawable/bg_input"
-                        android:padding="8dp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Chip info row -->
-            <LinearLayout
-                android:layout_width="match_parent"
+            <!-- 베팅할 사람 -->
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/bet_player"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
+
+            <Spinner
+                android:id="@+id/spinnerPlayer"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
                 android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:padding="8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textViewAvailableChips"
+                    android:id="@+id/textViewPlayerChips"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textColor="@color/text_secondary"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    tools:text="보내는 사람: 100개" />
 
                 <TextView
-                    android:id="@+id/textViewToChips"
+                    android:id="@+id/textViewRoundBet"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
                     android:textColor="@color/text_secondary"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    tools:text="이번 판: 25개" />
             </LinearLayout>
 
-            <!-- 탭하면 전액이 수량에 채워진다 -->
+            <!-- 금액 -->
             <TextView
-                android:id="@+id/textViewMaxTransfer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:paddingVertical="6dp"
-                android:textColor="@color/chip_gold"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <!-- Amount section -->
-            <TextView
-                android:id="@+id/textViewAmountLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -187,7 +130,6 @@
                 android:textColorHint="@color/text_secondary"
                 android:textSize="16sp" />
 
-            <!-- 자주 쓰는 금액. 매번 키패드를 두드리지 않아도 되게. -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -212,20 +154,42 @@
                     android:text="@string/all_in" />
             </LinearLayout>
 
-            <!-- Transfer button -->
             <Button
-                android:id="@+id/buttonConfirm"
+                android:id="@+id/buttonBet"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/bg_button_primary"
                 android:backgroundTint="@null"
                 android:enabled="false"
-                android:text="@string/confirm"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/place_bet"
                 android:textAllCaps="false"
                 android:textColor="@color/chip_cream"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold" app:backgroundTint="@null" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/rail_highlight" />
+
+            <Button
+                android:id="@+id/buttonTakePot"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_button_outline"
+                android:backgroundTint="@null"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/take_pot"
+                android:textAllCaps="false"
+                android:textColor="@color/chip_cream"
+                android:textSize="16sp"
+                android:textStyle="bold" app:backgroundTint="@null" />
 
         </LinearLayout>
     </ScrollView>

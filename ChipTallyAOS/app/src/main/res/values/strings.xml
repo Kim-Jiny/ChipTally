@@ -36,6 +36,27 @@
     <string name="amount_placeholder">Enter amount</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Transfer</string>
+    <string name="quick_amount">+%1$d</string>
+    <string name="all_in">All in</string>
+    <string name="swap_players">Swap sender and receiver</string>
+    <string name="tap_to_send">Tap a player to send chips</string>
+
+    <!-- Pot / Betting -->
+    <string name="pot">Pot</string>
+    <string name="pot_open">Open pot</string>
+    <string name="bet">Bet</string>
+    <string name="place_bet">Place bet</string>
+    <string name="bet_player">Who is betting</string>
+    <string name="round_bet">This round: %1$d</string>
+    <string name="holding_chips">Holding: %1$d</string>
+    <string name="take_pot">Take the pot</string>
+    <string name="take_pot_title">Take the pot</string>
+    <string name="take_pot_message">%1$s takes all %2$d chips?</string>
+    <string name="bet_placed">%1$s bet %2$d</string>
+    <string name="pot_won">%1$s took the pot: %2$d</string>
+    <string name="error_empty_pot">The pot is empty</string>
+    <string name="history_bet">%1$s → Pot</string>
+    <string name="history_pot_win">Pot → %1$s</string>
 
     <!-- History Screen -->
     <string name="no_transactions">No transactions yet</string>
@@ -57,4 +78,8 @@
     <string name="reset_title">Reset</string>
     <string name="reset_message">Reset saved settings?</string>
     <string name="close">Close</string>
+
+    <!-- AdMob -->
+    <string name="admob_banner_setup" translatable="false">ca-app-pub-2707874353926722/2222664881</string>
+    <string name="admob_banner_game" translatable="false">ca-app-pub-2707874353926722/5643302048</string>
 </resources>

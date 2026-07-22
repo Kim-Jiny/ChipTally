@@ -63,7 +63,8 @@
                     style="@style/Widget.Material3.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|end"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="4dp"
                     android:minWidth="0dp"
                     android:minHeight="0dp"
                     android:text="@string/reset"
@@ -181,13 +182,15 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <!-- Player names list -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewPlayers"
+            <!-- 최대 10행이고 자체 스크롤이 없으므로 RecyclerView 를 쓰지 않는다.
+                 ScrollView 안의 wrap_content RecyclerView 는 뷰포트 높이까지만
+                 레이아웃해서 뒷 행이 잘린다. -->
+            <LinearLayout
+                android:id="@+id/layoutPlayers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:nestedScrollingEnabled="false" />
+                android:orientation="vertical" />
 
             <!-- Start game button -->
             <Button
@@ -207,13 +210,11 @@
         </LinearLayout>
     </ScrollView>
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
+    <FrameLayout
+        android:id="@+id/adContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        app:adSize="BANNER"
-        app:adUnitId="ca-app-pub-2707874353926722/2222664881" />
+        android:minHeight="50dp" />
 
     </LinearLayout>
 </FrameLayout>

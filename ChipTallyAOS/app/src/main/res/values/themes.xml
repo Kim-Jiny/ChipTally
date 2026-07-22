@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.ChipTally" parent="Theme.Material3.DayNight.NoActionBar">
+    <!-- 실제 적용 테마. API 29+ 는 values-v29 에서 edge-to-edge 관련 속성을 덧붙인다. -->
+    <style name="Theme.ChipTally" parent="Theme.ChipTally.Base" />
+
+    <style name="Theme.ChipTally.Base" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/chip_red</item>
         <item name="colorPrimaryVariant">@color/chip_red_dark</item>
         <item name="colorOnPrimary">@color/chip_cream</item>
@@ -10,6 +13,9 @@
         <item name="android:statusBarColor">@color/rail</item>
         <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColorSecondary">@color/text_secondary</item>
+        <!-- targetSdk 36 강제 edge-to-edge: 시스템 바가 항상 투명해지므로
+             어두운 felt 배경 위에서 밝은 아이콘을 쓰도록 고정 -->
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <style name="Theme.ChipTally.Translucent" parent="Theme.ChipTally">
@@ -27,6 +33,27 @@
         <item name="android:textColorSecondary">@color/text_secondary</item>
         <item name="colorPrimary">@color/chip_gold</item>
         <item name="materialAlertDialogTitleTextStyle">@style/ChipTally.AlertDialog.Title</item>
+    </style>
+
+    <!-- 전송 화면의 빠른 금액 버튼 -->
+    <style name="ChipTally.QuickAmount" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">44dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginHorizontal">3dp</item>
+        <item name="android:background">@drawable/bg_button_outline</item>
+        <!-- MaterialButton 은 app:backgroundTint 를 본다. android: 쪽만 비우면
+             colorPrimary(빨강)가 배경 drawable 을 그대로 덮어버린다. -->
+        <item name="backgroundTint">@null</item>
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:paddingHorizontal">0dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/chip_gold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="ChipTally.AlertDialog.Title" parent="MaterialAlertDialog.Material3.Title.Text">

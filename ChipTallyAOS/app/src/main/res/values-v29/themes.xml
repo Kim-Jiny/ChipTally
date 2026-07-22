@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- targetSdk 36 에서 edge-to-edge 가 강제되면 시스템이 바 뒤에 반투명 스크림을
+         덧씌운다. felt 배경을 그대로 보여주기 위해 스크림을 끄고 밝은 아이콘을 유지한다. -->
+    <style name="Theme.ChipTally" parent="Theme.ChipTally.Base">
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:enforceStatusBarContrast">false</item>
+        <item name="android:enforceNavigationBarContrast">false</item>
+    </style>
+</resources>

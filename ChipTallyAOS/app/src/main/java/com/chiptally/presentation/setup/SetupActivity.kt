@@ -4,21 +4,21 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.content.Context
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import com.chiptally.R
 import com.chiptally.data.repository.GameRepositoryImpl
 import com.chiptally.databinding.ActivitySetupBinding
 import com.chiptally.databinding.ItemPlayerNameBinding
 import com.chiptally.presentation.game.GameActivity
 import com.chiptally.presentation.common.applySystemBarInsets
-import com.google.android.gms.ads.AdRequest
+import com.chiptally.presentation.common.loadAdaptiveBanner
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -26,7 +26,6 @@ class SetupActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySetupBinding
     private val viewModel: SetupViewModel by viewModels()
-    private lateinit var playerAdapter: PlayerNameAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +43,14 @@ class SetupActivity : AppCompatActivity() {
     }
 
     private fun setupAd() {
-        binding.adView.loadAd(AdRequest.Builder().build())
+        loadAdaptiveBanner(binding.adContainer, getString(R.string.admob_banner_setup))
+
+        // 키보드가 올라오면 배너가 키보드 바로 위에 붙어 오터치를 유발한다.
+        // 입력 중에는 감춘다. (root 에는 이미 리스너가 붙어 있어 여기에 따로 단다)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.adContainer) { view, insets ->
+            view.isVisible = !insets.isVisible(WindowInsetsCompat.Type.ime())
+            insets
+        }
     }
 
     private fun setupViews() {
@@ -53,16 +59,6 @@ class SetupActivity : AppCompatActivity() {
             v.performClick()
             false
         }
-        playerAdapter = PlayerNameAdapter(
-            names = viewModel.playerNames.value ?: mutableListOf("", ""),
-            onNameChanged = { index, name -> viewModel.updatePlayerName(index, name) }
-        )
-
-        binding.recyclerViewPlayers.apply {
-            layoutManager = LinearLayoutManager(this@SetupActivity)
-            adapter = playerAdapter
-        }
-
         binding.buttonDecrement.setOnClickListener {
             viewModel.decrementPlayerCount()
         }
@@ -109,7 +105,7 @@ class SetupActivity : AppCompatActivity() {
         }
 
         viewModel.playerNames.observe(this) { names ->
-            playerAdapter.updateNames(names)
+            renderPlayerNames(names)
         }
 
         viewModel.initialChipCount.observe(this) { count ->
@@ -133,66 +129,57 @@ class SetupActivity : AppCompatActivity() {
 
     private fun updateUI() {
         binding.editTextChipCount.setText(viewModel.initialChipCount.value.toString())
-        playerAdapter.updateNames(viewModel.playerNames.value ?: mutableListOf("", ""))
+        renderPlayerNames(viewModel.playerNames.value ?: mutableListOf("", ""))
+    }
+
+    /**
+     * 이름 입력 행을 목록 길이에 맞춘다.
+     *
+     * 행은 항상 끝에서만 늘고 줄어들기 때문에 각 행의 인덱스는 고정이고,
+     * 그래서 TextWatcher 를 만들 때 인덱스를 그대로 캡처해도 안전하다.
+     */
+    private fun renderPlayerNames(names: List<String>) {
+        val container = binding.layoutPlayers
+
+        while (container.childCount > names.size) {
+            container.removeViewAt(container.childCount - 1)
+        }
+        while (container.childCount < names.size) {
+            val index = container.childCount
+            val row = ItemPlayerNameBinding.inflate(layoutInflater, container, false)
+            row.root.tag = row
+            row.editTextPlayerName.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                override fun afterTextChanged(s: Editable?) {
+                    viewModel.updatePlayerName(index, s?.toString() ?: "")
+                }
+            })
+            container.addView(row.root)
+        }
+
+        names.forEachIndexed { index, name ->
+            val row = container.getChildAt(index).tag as ItemPlayerNameBinding
+            row.textViewPlayerLabel.text = getString(R.string.player_label, index + 1)
+
+            // 마지막 행에서는 '다음' 대신 '완료'로 키보드를 닫는다.
+            val imeAction =
+                if (index == names.lastIndex) EditorInfo.IME_ACTION_DONE
+                else EditorInfo.IME_ACTION_NEXT
+            if (row.editTextPlayerName.imeOptions != imeAction) {
+                row.editTextPlayerName.imeOptions = imeAction
+            }
+
+            // 입력 중인 칸을 다시 쓰면 커서가 앞으로 튄다. 값이 다를 때만 반영.
+            if (row.editTextPlayerName.text.toString() != name) {
+                row.editTextPlayerName.setText(name)
+            }
+        }
     }
 
     private fun hideKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val view = currentFocus ?: binding.root
         imm.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-}
-
-class PlayerNameAdapter(
-    private var names: MutableList<String>,
-    private val onNameChanged: (Int, String) -> Unit
-) : RecyclerView.Adapter<PlayerNameAdapter.ViewHolder>() {
-
-    class ViewHolder(val binding: ItemPlayerNameBinding) : RecyclerView.ViewHolder(binding.root) {
-        private var currentWatcher: TextWatcher? = null
-
-        fun bind(name: String, position: Int, onNameChanged: (Int, String) -> Unit) {
-            binding.textViewPlayerLabel.text =
-                binding.root.context.getString(R.string.player_label, position + 1)
-
-            currentWatcher?.let(binding.editTextPlayerName::removeTextChangedListener)
-            binding.editTextPlayerName.setText(name)
-            currentWatcher = object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-                override fun afterTextChanged(s: Editable?) {
-                    val currentPosition = bindingAdapterPosition
-                    if (currentPosition != RecyclerView.NO_POSITION) {
-                        onNameChanged(currentPosition, s?.toString() ?: "")
-                    }
-                }
-            }
-            binding.editTextPlayerName.addTextChangedListener(currentWatcher)
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemPlayerNameBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
-        )
-        return ViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(names.getOrNull(position) ?: "", position, onNameChanged)
-    }
-
-    override fun getItemCount() = names.size
-
-    fun updateNames(newNames: MutableList<String>) {
-        val oldSize = names.size
-        names = newNames
-        if (newNames.size > oldSize) {
-            notifyItemInserted(newNames.size - 1)
-        } else if (newNames.size < oldSize) {
-            notifyItemRemoved(oldSize - 1)
-        } else {
-            notifyDataSetChanged()
-        }
     }
 }

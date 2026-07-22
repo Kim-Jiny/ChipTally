@@ -18,7 +18,8 @@
             android:value="ca-app-pub-2707874353926722~1069632216" />
         <activity
             android:name=".presentation.setup.SetupActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -28,7 +29,12 @@
         <activity android:name=".presentation.history.HistoryActivity" />
         <activity
             android:name=".presentation.game.TransferActivity"
-            android:theme="@style/Theme.ChipTally.Translucent" />
+            android:theme="@style/Theme.ChipTally.Translucent"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".presentation.game.PotActivity"
+            android:theme="@style/Theme.ChipTally.Translucent"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

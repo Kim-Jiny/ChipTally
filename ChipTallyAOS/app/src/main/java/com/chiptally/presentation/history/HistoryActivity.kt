@@ -12,6 +12,7 @@ import com.chiptally.databinding.ActivityHistoryBinding
 import com.chiptally.databinding.ItemTransactionBinding
 import com.chiptally.domain.model.Player
 import com.chiptally.domain.model.Transaction
+import com.chiptally.domain.model.TransactionType
 import com.chiptally.presentation.common.applySystemBarInsets
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -80,15 +81,35 @@ class TransactionAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val transaction = transactions[position]
+        val context = holder.itemView.context
 
-        val fromName = players.find { it.id == transaction.fromPlayerId }?.name ?: "Unknown"
-        val toName = players.find { it.id == transaction.toPlayerId }?.name ?: "Unknown"
+        // 베팅/획득은 상대가 사람이 아니라 팟이다.
+        val potLabel = context.getString(R.string.pot)
+        val (fromName, toName) = when (transaction.type) {
+            TransactionType.BET -> playerName(transaction.fromPlayerId) to potLabel
+            TransactionType.POT_WIN -> potLabel to playerName(transaction.toPlayerId)
+            TransactionType.TRANSFER ->
+                playerName(transaction.fromPlayerId) to playerName(transaction.toPlayerId)
+        }
 
         holder.binding.textViewFromName.text = fromName
         holder.binding.textViewToName.text = toName
         holder.binding.textViewAmount.text = "+${transaction.amount}"
         holder.binding.textViewTimestamp.text = dateFormat.format(transaction.timestamp)
+
+        // 팟이 걸린 줄은 금색으로 구분한다.
+        val amountColor = if (transaction.type == TransactionType.TRANSFER) {
+            R.color.chip_cream
+        } else {
+            R.color.chip_gold
+        }
+        holder.binding.textViewAmount.setTextColor(
+            context.resources.getColor(amountColor, context.theme)
+        )
     }
+
+    private fun playerName(id: String): String =
+        players.find { it.id == id }?.name ?: "Unknown"
 
     override fun getItemCount() = transactions.size
 

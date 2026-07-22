@@ -33,7 +33,7 @@ class TransferChipsUseCase {
         fromPlayer.chipCount -= amount
         toPlayer.chipCount += amount
 
-        val transaction = Transaction(
+        val transaction = Transaction.transfer(
             fromPlayerId = fromPlayerId,
             toPlayerId = toPlayerId,
             amount = amount

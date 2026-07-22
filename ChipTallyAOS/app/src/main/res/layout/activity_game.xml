@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_felt"
@@ -61,40 +62,87 @@
         </LinearLayout>
     </FrameLayout>
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
+    <!-- 팟. 누르면 베팅/회수 화면이 열린다. -->
+    <LinearLayout
+        android:id="@+id/layoutPot"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:adSize="BANNER"
-        app:adUnitId="ca-app-pub-2707874353926722/5643302048"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutHeader" />
+        app:layout_constraintTop_toBottomOf="@id/layoutHeader">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pot"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/textViewPot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/chip_gold"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            tools:text="125" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="4dp"
+            android:contentDescription="@string/pot_open"
+            android:rotation="180"
+            android:src="@drawable/ic_back"
+            app:tint="@color/text_secondary" />
+    </LinearLayout>
+
+    <!-- 배너는 화면 최하단. adSize 는 코드에서 폭에 맞춰 지정하므로 여기서는
+         레이아웃 점프 방지를 위한 자리만 잡아둔다. -->
+    <FrameLayout
+        android:id="@+id/adContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- wrap_content + constrainedHeight: 인원이 적으면 카드가 세로 중앙에 모이고,
+         많아지면 남은 공간까지만 차지한 뒤 스크롤된다. -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewPlayers"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:padding="16dp"
-        android:paddingBottom="96dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toTopOf="@id/buttonTransfer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/adView" />
+        app:layout_constraintTop_toBottomOf="@id/layoutPot"
+        app:layout_constraintVertical_bias="0.5" />
 
     <ImageButton
         android:id="@+id/buttonTransfer"
         android:layout_width="68dp"
         android:layout_height="68dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/bg_button_primary"
         android:backgroundTint="@null"
         android:contentDescription="@string/transfer"
         android:elevation="14dp"
         android:scaleType="center"
         android:src="@drawable/ic_transfer"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/adContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

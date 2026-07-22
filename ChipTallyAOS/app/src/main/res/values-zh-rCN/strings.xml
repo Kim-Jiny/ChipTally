@@ -36,6 +36,10 @@
     <string name="amount_placeholder">输入数量</string>
     <string name="cancel">取消</string>
     <string name="confirm">转移</string>
+    <string name="quick_amount">+%1$d</string>
+    <string name="all_in">全下</string>
+    <string name="swap_players">交换发送方和接收方</string>
+    <string name="tap_to_send">点击玩家发送筹码</string>
 
     <!-- History Screen -->
     <string name="no_transactions">暂无交易记录</string>
@@ -57,4 +61,19 @@
     <string name="reset_title">重置</string>
     <string name="reset_message">确定要重置保存的设置吗？</string>
     <string name="close">关闭</string>
+    <string name="pot">彩池</string>
+    <string name="pot_open">打开彩池</string>
+    <string name="bet">下注</string>
+    <string name="place_bet">下注</string>
+    <string name="bet_player">谁下注</string>
+    <string name="round_bet">本轮：%1$d</string>
+    <string name="take_pot">拿走彩池</string>
+    <string name="take_pot_title">拿走彩池</string>
+    <string name="take_pot_message">%1$s 拿走彩池全部 %2$d 筹码？</string>
+    <string name="bet_placed">%1$s 下注 %2$d</string>
+    <string name="pot_won">%1$s 赢得彩池：%2$d</string>
+    <string name="error_empty_pot">彩池是空的</string>
+    <string name="history_bet">%1$s → 彩池</string>
+    <string name="history_pot_win">彩池 → %1$s</string>
+    <string name="holding_chips">持有：%1$d</string>
 </resources>

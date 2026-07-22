@@ -36,6 +36,10 @@
     <string name="amount_placeholder">数量を入力</string>
     <string name="cancel">キャンセル</string>
     <string name="confirm">送信する</string>
+    <string name="quick_amount">+%1$d</string>
+    <string name="all_in">オールイン</string>
+    <string name="swap_players">送信者と受信者を入れ替え</string>
+    <string name="tap_to_send">プレイヤーをタップしてチップを送る</string>
 
     <!-- History Screen -->
     <string name="no_transactions">取引履歴がありません</string>
@@ -57,4 +61,19 @@
     <string name="reset_title">リセット</string>
     <string name="reset_message">保存された設定をリセットしますか？</string>
     <string name="close">閉じる</string>
+    <string name="pot">ポット</string>
+    <string name="pot_open">ポットを開く</string>
+    <string name="bet">ベット</string>
+    <string name="place_bet">ベットする</string>
+    <string name="bet_player">ベットする人</string>
+    <string name="round_bet">この回: %1$d</string>
+    <string name="take_pot">ポットを取る</string>
+    <string name="take_pot_title">ポットを取る</string>
+    <string name="take_pot_message">%1$s がポットの %2$d 枚をすべて取りますか？</string>
+    <string name="bet_placed">%1$s が %2$d ベット</string>
+    <string name="pot_won">%1$s がポット %2$d を獲得</string>
+    <string name="error_empty_pot">ポットが空です</string>
+    <string name="history_bet">%1$s → ポット</string>
+    <string name="history_pot_win">ポット → %1$s</string>
+    <string name="holding_chips">保有: %1$d</string>
 </resources>

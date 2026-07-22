@@ -36,6 +36,10 @@
     <string name="amount_placeholder">수량을 입력하세요</string>
     <string name="cancel">취소</string>
     <string name="confirm">전송하기</string>
+    <string name="quick_amount">+%1$d</string>
+    <string name="all_in">올인</string>
+    <string name="swap_players">보내는 사람과 받는 사람 맞바꾸기</string>
+    <string name="tap_to_send">플레이어를 눌러 칩을 보내세요</string>
 
     <!-- History Screen -->
     <string name="no_transactions">거래 내역이 없습니다</string>
@@ -57,4 +61,19 @@
     <string name="reset_title">초기화</string>
     <string name="reset_message">저장된 설정을 초기화하시겠습니까?</string>
     <string name="close">닫기</string>
+    <string name="pot">팟</string>
+    <string name="pot_open">팟 열기</string>
+    <string name="bet">베팅</string>
+    <string name="place_bet">베팅하기</string>
+    <string name="bet_player">베팅할 사람</string>
+    <string name="round_bet">이번 판: %1$d개</string>
+    <string name="take_pot">팟 가져가기</string>
+    <string name="take_pot_title">팟 가져가기</string>
+    <string name="take_pot_message">%1$s님이 팟 %2$d개를 전부 가져갈까요?</string>
+    <string name="bet_placed">%1$s 베팅 %2$d개</string>
+    <string name="pot_won">%1$s님이 팟 %2$d개 획득</string>
+    <string name="error_empty_pot">팟이 비어 있습니다</string>
+    <string name="history_bet">%1$s → 팟</string>
+    <string name="history_pot_win">팟 → %1$s</string>
+    <string name="holding_chips">보유: %1$d개</string>
 </resources>
