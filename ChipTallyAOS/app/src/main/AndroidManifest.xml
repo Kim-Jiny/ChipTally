@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- AdMob 이 자동으로 병합해 주지만, Play Console 의 광고 ID 선언과 어긋나지 않도록
+         명시해 둔다. 광고 SDK 를 바꾸거나 빼도 선언이 조용히 사라지지 않는다. -->
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
